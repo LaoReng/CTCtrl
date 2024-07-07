@@ -59,8 +59,7 @@ bool CCrossTimeServer::SelectInit()
 		return false;
 	}
 	// 设置允许端口复用
-	int optval = 1;
-	if (setsockopt(m_serverSocket, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) {
+	if (!CTools::SetPortReuse(m_serverSocket)) {
 		LOG_ERROR << "重用端口设备失败";
 		m_logFile->flush();
 		Clear();
@@ -1154,12 +1153,21 @@ int CCrossTimeServer::startEquipmentCtrlDispose(const UrlParser& url, const CHtt
 						recvImageAddr.sin_family = AF_INET;
 						recvImageAddr.sin_port = htons(SEInfo.recvImagePort);
 						recvImageAddr.sin_addr.s_addr = inet_addr("0.0.0.0");
+						// 设置允许端口复用
+						if (!CTools::SetPortReuse(sock)) {
+							LOG_ERROR << "重用端口设备失败";
+							m_logFile->flush();
+							close(sock);
+							break;
+						}
+						// 绑定端口
 						if (bind(sock, (sockaddr*)&recvImageAddr, sizeof(recvImageAddr)) < 0) {
 							LOG_ERROR << "服务器端口绑定失败 " << SEInfo.recvImagePort;
 							m_logFile->flush();
 							close(sock);
 							break;
 						}
+						// 监听端口
 						if (listen(sock, 1) < 0) {
 							LOG_ERROR << "服务器套接字监听失败";
 							m_logFile->flush();
@@ -1806,7 +1814,7 @@ int CCrossTimeServer::endEquipmentCtrlDispose(const UrlParser& url, const CHttpP
 							id = (*res)[0]["Uid"];
 							m_db.FreeResult(res);
 						}
-						else 
+						else
 							m_db.FreeResult(res);
 						if (id == "") {
 							// 查询不到用户的id
@@ -1840,6 +1848,8 @@ int CCrossTimeServer::endEquipmentCtrlDispose(const UrlParser& url, const CHttpP
 							LOG_ERROR << "等待线程结束超时，以强制关闭监控线程";
 							m_logFile->flush();
 							pthread_cancel(it->second.eInfo.thread);  // 强制关闭线程
+							close(ret->second.sendImageClientSock);
+							close(ret->second.recvImageSock);
 						}
 
 						// 停止设备控制

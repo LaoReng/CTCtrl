@@ -37,6 +37,17 @@ public:
 		return 0;
 	}
 	/// <summary>
+	/// 设置端口复用
+	/// </summary>
+	/// <param name="sock">要设置端口复用的套接字</param>
+	/// <returns>返回值表示设置是否成功 true表示成功 false表示失败</returns>
+	static bool SetPortReuse(int sock)
+	{
+		int optval = 1;
+		int ret = setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+		return ret < 0 ? false : true;
+	}
+	/// <summary>
 	/// 发送http/https请求，通过curl
 	/// </summary>
 	/// <param name="host">服务地址 libcurl默认是不支持SSL的, 如果需要支持https，请在libcurl的编译选项中设置</param>
