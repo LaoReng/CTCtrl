@@ -12,7 +12,7 @@
 
 ### 部署教程
 
-环境要求：
+#### 环境要求：
 
 ​	部署之前需要安装Visual Studio代码编译器，包括VS Code、VS2019或更高版本
 
@@ -20,11 +20,41 @@
 
 ​	SSH连接配置参考：https://blog.csdn.net/weixin_64647426/article/details/131341970、https://blog.csdn.net/weixin_64647426/article/details/129319160
 
-Linux系统配置：
+#### Windows系统配置：
+
+​	**安装boost库**
+
+​		下载地址：https://sourceforge.net/projects/boost/files/boost-binaries/
+
+​		<img src="README.assets/image-20240707122410061.png" alt="image-20240707122410061" style="zoom:80%;" />
+
+​		<img src="README.assets/image-20240707122438471.png" alt="image-20240707122438471" style="zoom:80%;" />
+
+​	**安装openCV**
+
+​		下载地址：https://opencv.org/releases/
+
+​		<img src="README.assets/image-20240707124025403.png" alt="image-20240707124025403" style="zoom:80%;" />
+
+​	**安装ffmpeg**
+
+​		下载地址：https://github.com/BtbN/FFmpeg-Builds/releases
+
+​		<img src="README.assets/image-20240707122858109.png" alt="image-20240707122858109" style="zoom:80%;" />
+
+​	进入页面找对应的版本进行下载，比如我这里是Windows系统要使用ffmpeg进行开发
+
+​	这里包含两个版本，一个是带shared的，一个是不带shared，带shared的版本里面包含ffmpeg的库文件可以对ffmpeg进行再开发，不带shared的版本只包含了ffmpeg的使用工具，我们是要利用ffmpeg来进行我们程序的一个开发所以选择带shared的版本，这里按大家的需要选择就可以
+
+​	下载好后，解压就可以直接使用，ffmpeg的工具就在bin目录下
+
+<img src="README.assets/image-20240707123016897.png" alt="image-20240707123016897" style="zoom:80%;" />
+
+#### Linux系统配置：
 
 ​	Linux操作系统需要安装gcc、g++、gdb、git、cmake、make、rsync、zip、boost、curl、websocketpp以及MySQL开发环境
 
-​	安装命令（以Ubuntu22.04为例）：
+​	**安装命令（以Ubuntu22.04为例）：**
 
 ​		`sudo apt install gcc g++ gdb git cmake make rsync zip libboost-dev curl libcurl4-openssl-dev`
 
@@ -32,7 +62,7 @@ Linux系统配置：
 
 ​		MySQL远程连接配置参考：https://blog.csdn.net/weixin_64647426/article/details/134105615
 
-​	websocketpp安装命令（以Ubuntu22.04为例）：
+​	**websocketpp安装命令（以Ubuntu22.04为例）：**
 
 ​		克隆websocketpp仓库代码：`git clone https://github.com/zaphoyd/websocketpp.git`
 
