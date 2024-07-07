@@ -132,3 +132,59 @@ typedef struct MKEvent {
 	WORD  MKOperation; // 鼠标键盘事件类型  0b00010000表示按下 0b00100000表示抬起 0b00000001表示右键 0b00000010表示中键 0b00000100表示左键
 	DWORD MKKeyValue;  // 按下的键值 
 }MKEVENT, * PMKEVENT;
+
+// 图片数据
+typedef struct ImageData
+{
+public:
+	char        m_name[64];   // 图片名
+	std::string m_data;       // 图片数据
+private:
+	mutable std::string Data;  // 总数据
+public:
+	/// <summary>
+	/// 构造函数
+	/// </summary>
+	/// <param name="ImageName">图片名</param>
+	/// <param name="size">参数ImageName所占大小</param>
+	ImageData(const char* ImageName = NULL, size_t size = 0)
+		: m_name("")
+	{
+		if (size >= sizeof(m_name))
+			size = sizeof(m_name);
+		if (ImageName)
+			memcpy(m_name, ImageName, size);
+	}
+	/// <summary>
+	/// 数据解析
+	/// </summary>
+	/// <param name="pData">数据内容</param>
+	/// <param name="size">大小</param>
+	/// <returns>返回值表示解析是否成功， true表示成功  false表示失败</returns>
+	bool parse(const char* pData, size_t size) {
+		if (size < sizeof(m_name))
+			return false;
+		m_data.resize(size - sizeof(m_name));
+		memcpy(m_name, pData, sizeof(m_name));
+		memcpy((char*)m_data.c_str(), pData + sizeof(m_name), size - sizeof(m_name));
+		return true;
+	}
+	/// <summary>
+	/// 将数据转换为字节流
+	/// </summary>
+	/// <returns>返回值表示转换后的数据</returns>
+	const char* toBytes() const {
+		Data.clear();
+		Data.resize(sizeof(m_name) + m_data.size());
+		memcpy((char*)Data.c_str(), m_name, sizeof(m_name));
+		memcpy((char*)Data.c_str() + sizeof(m_name), m_data.c_str(), m_data.size());
+		return Data.c_str();
+	}
+	/// <summary>
+	/// 数据大小
+	/// </summary>
+	/// <returns>返回值表示转换字节流数据的大小</returns>
+	size_t Size() const {
+		return sizeof(m_name) + m_data.size();
+	}
+}IMAGEDATA;

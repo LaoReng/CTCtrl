@@ -60,6 +60,18 @@ size_t CHttpParser::Parser(const Buffer& data)
 	return ret;
 }
 
+size_t CHttpParser::Parser(const char* data, size_t len)
+{
+	m_complete = false;
+	size_t ret = http_parser_execute(&m_parser, &m_settings, data, len);
+	if (m_complete == false) {
+		// 消息没有解析完
+		m_parser.http_errno = 0x7F;
+		return 0;
+	}
+	return ret;
+}
+
 CHttpParser::~CHttpParser()
 {
 }

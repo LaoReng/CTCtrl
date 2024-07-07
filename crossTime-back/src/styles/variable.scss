@@ -1,0 +1,27 @@
+//左侧菜单的宽度
+$slider-width: 15rem;
+//左侧菜单的背景样色
+$slider-bg:#001529;
+//顶部高度
+$header:4rem;
+
+//滚动条外观的设置
+// ::-webkit-scrollbar{
+//     width: 10px;
+// }
+// ::-webkit-scrollbar-track{
+//     background-color: $slider-bg;
+// }
+::-webkit-scrollbar-thumb{
+    width: 10px;
+    background-color: rgb(0, 255, 13);
+    border-radius: 10px;
+}
+
+//左侧logo的高度
+$logoContainerHeight:4.5rem;
+//左侧logo的内边距
+$logoPadding:4rem;
+
+//折叠的最小宽度
+$foldWidth:4rem;

@@ -1,0 +1,59 @@
+//左侧菜单的宽度
+$slider-width:14rem;
+//左侧菜单的背景样色
+$slider-bg: #545c64;
+//顶部高度
+$header:4rem;
+
+//滚动条外观的设置
+// ::-webkit-scrollbar{
+//     width: 10px;
+// }
+// ::-webkit-scrollbar-track{
+//     background-color: $slider-bg;
+// }
+// ::-webkit-scrollbar-thumb{
+//     width: 10px;
+//     background-color: rgb(0, 255, 13);
+//     border-radius: 10px;
+// }
+
+//左侧logo的高度
+$logoContainerHeight:4rem;
+//左侧logo的内边距
+$logoPadding:1rem;
+
+//折叠的最小宽度
+$foldWidth:4rem;
+
+
+//加载中
+$main: #fff5a5;
+$secundary: #ffd4da;
+$terchiary: #99d2e4;
+
+
+
+//header部分的左侧面包屑宽度
+$leftContent:17.8rem;
+
+//BEGIN(HOME)
+/*
+view/home页面公共大小
+*/
+
+
+
+// VNC
+$vnc_header:4rem;
+$vnc_width:4rem;
+
+
+
+//数据大屏的高度
+$screenHeader: 60px;
+//数据大屏的下边界颜色
+$screenBorderBottom:linear-gradient(rgb(104, 216, 254), rgb(104, 216, 254)) left top,
+linear-gradient(rgb(104, 216, 254), rgb(104, 216, 254)) left top,
+linear-gradient(rgb(104, 216, 254), rgb(104, 216, 254)) right top,
+linear-gradient(rgb(104, 216, 254), rgb(104, 216, 254)) right top;

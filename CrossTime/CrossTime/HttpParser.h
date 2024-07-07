@@ -25,6 +25,8 @@ public:
 public:
 	// http数据解析
 	size_t Parser(const Buffer& data);
+	// http协议解析
+	size_t Parser(const char* data, size_t len);
 	// GET POST ...  参考http_parser.h HTTP_METHOD_MAP宏
 	unsigned Method() const {
 		return m_parser.method;

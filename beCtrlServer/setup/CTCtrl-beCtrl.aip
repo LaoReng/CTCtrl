@@ -7,7 +7,8 @@
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
     <ROW Property="AI_CURRENT_YEAR" Value="2024" ValueLocId="-"/>
     <ROW Property="AI_FINDEXE_TITLE" Value="选择 [|ProductName] 安装包" ValueLocId="AI.Property.FindExeTitle"/>
-    <ROW Property="AI_FrameColor" Value="powderblue" MultiBuildValue="DefaultBuild:darkolivegreen" MsiKey="AI_FrameColor"/>
+    <ROW Property="AI_FrameBtns" Value="default" MultiBuildValue="DefaultBuild:mauve" MsiKey="AI_FrameBtns"/>
+    <ROW Property="AI_FrameColor" Value="powderblue" MultiBuildValue="DefaultBuild:chrome" MsiKey="AI_FrameColor"/>
     <ROW Property="AI_ImagesColor" Value="powderblue" MultiBuildValue="DefaultBuild:chrome" MsiKey="AI_ImagesColor"/>
     <ROW Property="AI_PACKAGING_TOOL" Value="Advanced Installer 20.2 build 2c3f1cf9" ValueLocId="-"/>
     <ROW Property="AI_PREDEF_LCONDS_PROPS" Value="AI_DETECTED_ADMIN_USER"/>
@@ -16,26 +17,30 @@
     <ROW Property="ALLUSERS" Value="1" MultiBuildValue="DefaultBuild:2"/>
     <ROW Property="ARPCOMMENTS" Value="此 Installer 数据库包含了安装 [|ProductName] 所需的逻辑和数据。" ValueLocId="*"/>
     <ROW Property="ARPNOREPAIR" Value="1" MultiBuildValue="DefaultBuild:1"/>
-    <ROW Property="ARPPRODUCTICON" Value="logo.exe" Type="8"/>
-    <ROW Property="CompanyLogo" Value="blue.jpg" MultiBuildValue="DefaultBuild:logo.png" Type="1" MsiKey="CompanyLogo"/>
+    <ROW Property="ARPPRODUCTICON" Value="logo_1.exe" Type="8"/>
+    <ROW Property="CompanyLogo" Value="blue.jpg" MultiBuildValue="DefaultBuild:logo.ico_1" Type="1" MsiKey="CompanyLogo"/>
     <ROW Property="IAgree" Value="No" Type="4"/>
-    <ROW Property="LogoIcon" Value="externalui.ico" MultiBuildValue="DefaultBuild:logo.ico" Type="1" MsiKey="LogoIcon"/>
+    <ROW Property="LogoIcon" Value="externalui.ico" MultiBuildValue="DefaultBuild:logo.ico_1" Type="1" MsiKey="LogoIcon"/>
     <ROW Property="Manufacturer" Value="CTC"/>
-    <ROW Property="ProductCode" Value="2052:{D723CA35-55EB-46C0-934D-12DDE3D57995} " Type="16"/>
+    <ROW Property="ProductCode" Value="2052:{3F5B944B-E818-412E-8AEE-B4427F435EB3} " Type="16"/>
     <ROW Property="ProductLanguage" Value="2052"/>
     <ROW Property="ProductName" Value="CTCtrl-beCtrl"/>
-    <ROW Property="ProductVersion" Value="1.0.0"/>
+    <ROW Property="ProductVersion" Value="2.0.0"/>
     <ROW Property="REBOOT" MultiBuildValue="DefaultBuild:ReallySuppress"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{0A5D273F-7DE6-41F3-B67C-9E41BE817569}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
     <ROW Property="WindowsType9XDisplay" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT" MultiBuildValue="DefaultBuild:Windows Vista x86, Windows Server 2008 x86, Windows 7 x86, Windows 8 x86" ValueLocId="-"/>
     <ROW Property="WindowsTypeNT40" MultiBuildValue="DefaultBuild:Windows NT 4.0" ValueLocId="-"/>
     <ROW Property="WindowsTypeNT40Display" MultiBuildValue="DefaultBuild:Windows NT 4.0" ValueLocId="-"/>
     <ROW Property="WindowsTypeNT50" MultiBuildValue="DefaultBuild:Windows 2000" ValueLocId="-"/>
     <ROW Property="WindowsTypeNT50Display" MultiBuildValue="DefaultBuild:Windows 2000" ValueLocId="-"/>
     <ROW Property="WindowsTypeNT5X" MultiBuildValue="DefaultBuild:Windows XP/2003" ValueLocId="-"/>
     <ROW Property="WindowsTypeNT5XDisplay" MultiBuildValue="DefaultBuild:Windows XP/2003" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT64" MultiBuildValue="DefaultBuild:Windows Vista x64, Windows Server 2008 x64, Windows 7 x64, Windows Server 2008 R2 x64, Windows 8 x64" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNT64Display" MultiBuildValue="DefaultBuild:Windows Vista x64, Windows Server 2008 x64, Windows 7 x64, Windows Server 2008 R2 x64, Windows 8 x64" ValueLocId="-"/>
+    <ROW Property="WindowsTypeNTDisplay" MultiBuildValue="DefaultBuild:Windows Vista x86, Windows Server 2008 x86, Windows 7 x86, Windows 8 x86" ValueLocId="-"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
@@ -48,135 +53,129 @@
     <ROW Component="AI_ExePath" ComponentId="{B0981897-B7FB-4E1B-941F-23E7D1180D59}" Directory_="APPDIR" Attributes="260" KeyPath="AI_ExePath"/>
     <ROW Component="AI_INSTALLPERUSER" ComponentId="{22B1D2B0-25BA-457D-A0DE-FFF808FA42E1}" Directory_="APPDIR" Attributes="260" KeyPath="AI_INSTALLPERUSER" Options="1"/>
     <ROW Component="APPDIR" ComponentId="{597ACADD-6B16-4364-A4AC-CDEF9ABAE048}" Directory_="APPDIR" Attributes="0"/>
-    <ROW Component="GdiPlus.dll" ComponentId="{DAE59447-7C41-4BB9-ABAE-0BB183B9EF17}" Directory_="bin_Dir" Attributes="256" KeyPath="GdiPlus.dll"/>
-    <ROW Component="KernelBase.dll" ComponentId="{09C6293A-921F-4535-84A4-A15EC857AC0D}" Directory_="bin_Dir" Attributes="256" KeyPath="KernelBase.dll"/>
+    <ROW Component="CoreMessaging.dll" ComponentId="{A9D00780-BE9D-4811-B600-B4E2395C6E51}" Directory_="bin_Dir" Attributes="256" KeyPath="CoreMessaging.dll"/>
+    <ROW Component="CoreUIComponents.dll" ComponentId="{89FF5B26-7559-433A-8180-97BCADEC2FE9}" Directory_="bin_Dir" Attributes="256" KeyPath="CoreUIComponents.dll"/>
+    <ROW Component="GdiPlus.dll" ComponentId="{97186162-1A57-41E8-960C-75CD7970A3B2}" Directory_="bin_Dir" Attributes="256" KeyPath="GdiPlus.dll"/>
+    <ROW Component="KernelBase.dll" ComponentId="{EA1EA17B-4DA9-44A2-A538-73AE9ABE7C0B}" Directory_="bin_Dir" Attributes="256" KeyPath="KernelBase.dll"/>
+    <ROW Component="OneCoreUAPCommonProxyStub.dll" ComponentId="{D2E5F2D6-79AE-49EC-8979-F55C98E2A4A2}" Directory_="bin_Dir" Attributes="256" KeyPath="OneCoreUAPCommonProxyStub.dll"/>
     <ROW Component="ProductInformation" ComponentId="{8BB38F42-BF6D-466E-98CB-16863BD64B63}" Directory_="APPDIR" Attributes="260" KeyPath="Version"/>
-    <ROW Component="RTWorkQ.dll" ComponentId="{D5D229AE-32D6-4210-8AB7-9F03527A375B}" Directory_="bin_Dir" Attributes="256" KeyPath="RTWorkQ.dll"/>
-    <ROW Component="SHCore.dll" ComponentId="{C2BEF3A1-E526-4822-8A17-5D3D64CDB80D}" Directory_="bin_Dir" Attributes="256" KeyPath="SHCore.dll"/>
-    <ROW Component="TextInputFramework.dll" ComponentId="{9802E544-B3B0-4EFC-A3C2-9D61A856A332}" Directory_="bin_Dir" Attributes="256" KeyPath="TextInputFramework.dll"/>
-    <ROW Component="TextShaping.dll" ComponentId="{0F363350-59F9-4D85-8507-DC9B2414FC87}" Directory_="bin_Dir" Attributes="256" KeyPath="TextShaping.dll"/>
-    <ROW Component="advapi32.dll" ComponentId="{3B3F1CAC-8790-4635-8740-A70B59FD0B98}" Directory_="bin_Dir" Attributes="256" KeyPath="advapi32.dll"/>
-    <ROW Component="bcrypt.dll" ComponentId="{64AA9BCD-0803-4387-ABFF-01B41A2CB4A4}" Directory_="bin_Dir" Attributes="256" KeyPath="bcrypt.dll"/>
-    <ROW Component="bcryptprimitives.dll" ComponentId="{433770A8-7B17-4C80-8A2B-9D99E6BCD51E}" Directory_="bin_Dir" Attributes="256" KeyPath="bcryptprimitives.dll"/>
-    <ROW Component="beCtrlServer.exe" ComponentId="{D8BBFA02-2166-4742-B5B3-AA150BDA0080}" Directory_="APPDIR" Attributes="256" KeyPath="beCtrlServer.exe"/>
-    <ROW Component="cfgmgr32.dll" ComponentId="{D5C4C4F1-5666-496A-BD52-EBE536960D69}" Directory_="bin_Dir" Attributes="256" KeyPath="cfgmgr32.dll"/>
-    <ROW Component="clbcatq.dll" ComponentId="{33429590-C3F1-4FD4-BB78-221387378281}" Directory_="bin_Dir" Attributes="256" KeyPath="clbcatq.dll"/>
-    <ROW Component="combase.dll" ComponentId="{C7CA94F8-45D0-42B3-B6EE-CD5AA29923AF}" Directory_="bin_Dir" Attributes="256" KeyPath="combase.dll"/>
-    <ROW Component="comctl32.dll" ComponentId="{681F4ADB-DE86-40E3-9EAC-204D81CB8A24}" Directory_="bin_Dir" Attributes="256" KeyPath="comctl32.dll"/>
-    <ROW Component="comdlg32.dll" ComponentId="{853C16FC-D152-45A1-8D0B-8D1E9D737911}" Directory_="bin_Dir" Attributes="256" KeyPath="comdlg32.dll"/>
-    <ROW Component="concrt140d.dll" ComponentId="{0F69E958-58B1-4052-A39A-440BE33A248B}" Directory_="bin_Dir" Attributes="256" KeyPath="concrt140d.dll"/>
-    <ROW Component="gdi32.dll" ComponentId="{CB43E3D3-F041-48F9-B05C-CAD442AF3367}" Directory_="bin_Dir" Attributes="256" KeyPath="gdi32.dll"/>
-    <ROW Component="gdi32full.dll" ComponentId="{A6D7E1B7-95ED-4185-9AB1-DC059B9AB831}" Directory_="bin_Dir" Attributes="256" KeyPath="gdi32full.dll"/>
-    <ROW Component="icon1.ico" ComponentId="{9953550A-94B3-4B29-B52E-9F9730A65E7B}" Directory_="image_Dir" Attributes="0" KeyPath="icon1.ico" Type="0"/>
-    <ROW Component="imm32.dll" ComponentId="{860B5135-9C3A-4DFF-AD1D-0226F356BF3E}" Directory_="bin_Dir" Attributes="256" KeyPath="imm32.dll"/>
-    <ROW Component="kernel.appcore.dll" ComponentId="{9149CE2D-A274-4AB6-A747-53DE66EAEF0E}" Directory_="bin_Dir" Attributes="256" KeyPath="kernel.appcore.dll"/>
-    <ROW Component="kernel32.dll" ComponentId="{C263B9C1-2022-4631-9ABA-0DE57C2D98DD}" Directory_="bin_Dir" Attributes="256" KeyPath="kernel32.dll"/>
-    <ROW Component="mf.dll" ComponentId="{2FF77DDC-47FA-4EB7-8450-699EB2F8B914}" Directory_="bin_Dir" Attributes="256" KeyPath="mf.dll"/>
-    <ROW Component="mfc140ud.dll" ComponentId="{ED6FFBCF-F0B0-4597-B636-2EE3ABFB3663}" Directory_="bin_Dir" Attributes="256" KeyPath="mfc140ud.dll"/>
-    <ROW Component="mfcore.dll" ComponentId="{4DEDD17C-A2CF-403C-8E3F-A04B2C51B69B}" Directory_="bin_Dir" Attributes="256" KeyPath="mfcore.dll"/>
-    <ROW Component="mfplat.dll" ComponentId="{15D6CC34-71F3-4C7A-9339-7CEBB4B9A926}" Directory_="bin_Dir" Attributes="256" KeyPath="mfplat.dll"/>
-    <ROW Component="mfreadwrite.dll" ComponentId="{2ED479B5-8D15-4C24-97DF-24AF1A1ADD46}" Directory_="bin_Dir" Attributes="256" KeyPath="mfreadwrite.dll"/>
-    <ROW Component="msctf.dll" ComponentId="{C812BA0E-3777-4E5F-9D1C-FADC8DF0F429}" Directory_="bin_Dir" Attributes="256" KeyPath="msctf.dll"/>
-    <ROW Component="msimg32.dll" ComponentId="{C5FD0301-3173-42F8-9F4C-6557C63F7D90}" Directory_="bin_Dir" Attributes="256" KeyPath="msimg32.dll"/>
-    <ROW Component="msvcp140.dll" ComponentId="{011EF9EF-4601-40EA-9DDF-C8D1E180CD9D}" Directory_="bin_Dir" Attributes="256" KeyPath="msvcp140.dll"/>
-    <ROW Component="msvcp140d.dll" ComponentId="{D74C86B3-1BE5-454F-B12B-88DEAC08A0B0}" Directory_="bin_Dir" Attributes="256" KeyPath="msvcp140d.dll"/>
-    <ROW Component="msvcp_win.dll" ComponentId="{1964CD59-D167-49D8-81E4-09A5AE8A2A27}" Directory_="bin_Dir" Attributes="256" KeyPath="msvcp_win.dll"/>
-    <ROW Component="msvcrt.dll" ComponentId="{64A7F93E-E4C1-4C75-8CBE-5CC67DDF0DA2}" Directory_="bin_Dir" Attributes="256" KeyPath="msvcrt.dll"/>
-    <ROW Component="mswsock.dll" ComponentId="{3E52B3B8-6D7F-4D4F-82BC-00566D61897B}" Directory_="bin_Dir" Attributes="256" KeyPath="mswsock.dll"/>
-    <ROW Component="ntdll.dll" ComponentId="{11D77644-8A5D-4593-B9E7-06AF74823BA8}" Directory_="bin_Dir" Attributes="256" KeyPath="ntdll.dll"/>
-    <ROW Component="ole32.dll" ComponentId="{3295939D-0DEA-49FB-9BC5-838D40AFAB1C}" Directory_="bin_Dir" Attributes="256" KeyPath="ole32.dll"/>
-    <ROW Component="oleacc.dll" ComponentId="{D276FD53-9A27-4E4D-AD37-9BF5DE9A3070}" Directory_="bin_Dir" Attributes="256" KeyPath="oleacc.dll"/>
-    <ROW Component="oleaut32.dll" ComponentId="{176F0E58-CE6C-4B78-B3BE-0A34B1B8DAFC}" Directory_="bin_Dir" Attributes="256" KeyPath="oleaut32.dll"/>
-    <ROW Component="oledlg.dll" ComponentId="{9CAB19CA-0268-47E8-8B42-E638F45F9ECC}" Directory_="bin_Dir" Attributes="256" KeyPath="oledlg.dll"/>
-    <ROW Component="opencv_videoio_ffmpeg490_64.dll" ComponentId="{A90DFFC3-7A9F-4DC5-A70D-FF6FECB2680F}" Directory_="bin_Dir" Attributes="256" KeyPath="opencv_videoio_ffmpeg490_64.dll"/>
-    <ROW Component="opencv_videoio_msmf490_64.dll" ComponentId="{552511D2-E825-45D8-A878-1470A0D8BBB4}" Directory_="bin_Dir" Attributes="256" KeyPath="opencv_videoio_msmf490_64.dll"/>
-    <ROW Component="opencv_videoio_msmf490_64d.dll" ComponentId="{2E99969F-39EC-4CA8-A003-D71EB18DCEE2}" Directory_="bin_Dir" Attributes="256" KeyPath="opencv_videoio_msmf490_64d.dll"/>
-    <ROW Component="opencv_world490.dll" ComponentId="{251E264D-4425-42BE-89A7-F105353CCA58}" Directory_="bin_Dir" Attributes="256" KeyPath="opencv_world490.dll"/>
-    <ROW Component="opencv_world490d.dll" ComponentId="{E1EDBEC1-B1FC-4F4A-BE2B-35984E281DDF}" Directory_="bin_Dir" Attributes="256" KeyPath="opencv_world490d.dll"/>
-    <ROW Component="rpcrt4.dll" ComponentId="{4BB960D9-6A17-476D-A7F4-6A975D0EE8DB}" Directory_="bin_Dir" Attributes="256" KeyPath="rpcrt4.dll"/>
-    <ROW Component="sechost.dll" ComponentId="{BDC63C15-2185-4A52-BBBE-C6BACC856EF0}" Directory_="bin_Dir" Attributes="256" KeyPath="sechost.dll"/>
-    <ROW Component="shell32.dll" ComponentId="{64889B89-3C90-4533-B848-DAD6A363BC93}" Directory_="bin_Dir" Attributes="256" KeyPath="shell32.dll"/>
-    <ROW Component="shlwapi.dll" ComponentId="{C17F7D43-0418-4802-8106-DD1271484F02}" Directory_="bin_Dir" Attributes="256" KeyPath="shlwapi.dll"/>
-    <ROW Component="ucrtbase.dll" ComponentId="{563E42DF-46C3-4056-844C-9FC8702BA577}" Directory_="bin_Dir" Attributes="256" KeyPath="ucrtbase.dll"/>
-    <ROW Component="ucrtbased.dll" ComponentId="{AD9256B0-61AC-47EB-932E-ABFA92FC43B8}" Directory_="bin_Dir" Attributes="256" KeyPath="ucrtbased.dll"/>
-    <ROW Component="user32.dll" ComponentId="{C7A7A3B3-2487-41C5-80AD-01DF6ECF5E1A}" Directory_="bin_Dir" Attributes="256" KeyPath="user32.dll"/>
-    <ROW Component="uxtheme.dll" ComponentId="{4AFBFDFB-7732-4E29-A8C6-4DDB55151194}" Directory_="bin_Dir" Attributes="256" KeyPath="uxtheme.dll"/>
-    <ROW Component="vcruntime140.dll" ComponentId="{CF69E95B-9064-47D7-8E90-223799CF93A5}" Directory_="bin_Dir" Attributes="256" KeyPath="vcruntime140.dll"/>
-    <ROW Component="vcruntime140_1d.dll" ComponentId="{7B73B6EA-9FFE-4C86-9B6E-C1D1338FEFFD}" Directory_="bin_Dir" Attributes="256" KeyPath="vcruntime140_1d.dll"/>
-    <ROW Component="vcruntime140d.dll" ComponentId="{F17407CD-808F-4D5E-B390-C06627939119}" Directory_="bin_Dir" Attributes="256" KeyPath="vcruntime140d.dll"/>
-    <ROW Component="win32u.dll" ComponentId="{4F6245F0-3B32-49AA-BBBC-9B1A4A75AED3}" Directory_="bin_Dir" Attributes="256" KeyPath="win32u.dll"/>
-    <ROW Component="winmm.dll" ComponentId="{5561C26B-480F-4476-89B4-FE1ABC9E4113}" Directory_="bin_Dir" Attributes="256" KeyPath="winmm.dll"/>
-    <ROW Component="winspool.drv" ComponentId="{30D0F84D-45A2-4517-B38B-7D86F13349EE}" Directory_="bin_Dir" Attributes="256" KeyPath="winspool.drv" Type="0"/>
-    <ROW Component="ws2_32.dll" ComponentId="{F923650B-2425-476D-920A-BE6EBBDB37FB}" Directory_="bin_Dir" Attributes="256" KeyPath="ws2_32.dll"/>
+    <ROW Component="RTWorkQ.dll" ComponentId="{D76A45FC-077B-4517-9EDE-67F8FC6B42F6}" Directory_="bin_Dir" Attributes="256" KeyPath="RTWorkQ.dll"/>
+    <ROW Component="SHCore.dll" ComponentId="{B87A0DF7-E313-48FC-B702-6947DB6BA127}" Directory_="bin_Dir" Attributes="256" KeyPath="SHCore.dll"/>
+    <ROW Component="TextInputFramework.dll" ComponentId="{85807CF5-C456-49A7-BEB7-E265D59222E9}" Directory_="bin_Dir" Attributes="256" KeyPath="TextInputFramework.dll"/>
+    <ROW Component="TextShaping.dll" ComponentId="{BE82B490-FF74-4199-AF67-D1866A235E0B}" Directory_="bin_Dir" Attributes="256" KeyPath="TextShaping.dll"/>
+    <ROW Component="WinTypes.dll" ComponentId="{999F6029-20BB-4E06-A2E1-9930B4C30633}" Directory_="bin_Dir" Attributes="256" KeyPath="WinTypes.dll"/>
+    <ROW Component="advapi32.dll" ComponentId="{8D846287-711C-4CBD-8172-327D8C620757}" Directory_="bin_Dir" Attributes="256" KeyPath="advapi32.dll"/>
+    <ROW Component="bcrypt.dll" ComponentId="{5111AE46-A2DD-4E28-A5B6-868F4CA75D95}" Directory_="bin_Dir" Attributes="256" KeyPath="bcrypt.dll"/>
+    <ROW Component="bcryptprimitives.dll" ComponentId="{FCA72782-90F1-4819-A825-E7313672162C}" Directory_="bin_Dir" Attributes="256" KeyPath="bcryptprimitives.dll"/>
+    <ROW Component="beCtrlServer.exe" ComponentId="{01DF56CF-7545-45D4-BB17-5CE6A711F2A1}" Directory_="APPDIR" Attributes="256" KeyPath="beCtrlServer.exe"/>
+    <ROW Component="cfgmgr32.dll" ComponentId="{B0FADA5F-7A1D-42F8-A590-82A867679918}" Directory_="bin_Dir" Attributes="256" KeyPath="cfgmgr32.dll"/>
+    <ROW Component="clbcatq.dll" ComponentId="{F8891A38-5781-4F1F-8C49-A3D5FFF4F279}" Directory_="bin_Dir" Attributes="256" KeyPath="clbcatq.dll"/>
+    <ROW Component="combase.dll" ComponentId="{161CD58B-C035-4488-9101-E68E252150B9}" Directory_="bin_Dir" Attributes="256" KeyPath="combase.dll"/>
+    <ROW Component="comctl32.dll" ComponentId="{6E58115F-795A-4F36-B1C6-EDC38DEA6517}" Directory_="bin_Dir" Attributes="256" KeyPath="comctl32.dll"/>
+    <ROW Component="comdlg32.dll" ComponentId="{F2881FCA-D27E-441F-9F7C-81FC349AD79D}" Directory_="bin_Dir" Attributes="256" KeyPath="comdlg32.dll"/>
+    <ROW Component="concrt140.dll" ComponentId="{DCCAF415-324F-48ED-BC0A-17189D07386F}" Directory_="bin_Dir" Attributes="256" KeyPath="concrt140.dll"/>
+    <ROW Component="cryptbase.dll" ComponentId="{661AD409-E07D-44BF-9532-08421C678416}" Directory_="bin_Dir" Attributes="256" KeyPath="cryptbase.dll"/>
+    <ROW Component="cryptsp.dll" ComponentId="{AE5DA843-EDCC-47DE-A924-BAFEAAD1B5E4}" Directory_="bin_Dir" Attributes="256" KeyPath="cryptsp.dll"/>
+    <ROW Component="gdi32.dll" ComponentId="{5F75728F-B1D8-4EED-8340-B5A434E08115}" Directory_="bin_Dir" Attributes="256" KeyPath="gdi32.dll"/>
+    <ROW Component="gdi32full.dll" ComponentId="{8959221D-3CD4-4E9F-806D-A83171C521E5}" Directory_="bin_Dir" Attributes="256" KeyPath="gdi32full.dll"/>
+    <ROW Component="icon1.ico" ComponentId="{9260E6CC-399A-4982-AC9D-85DB01C6797C}" Directory_="image_Dir" Attributes="0" KeyPath="icon1.ico" Type="0"/>
+    <ROW Component="imm32.dll" ComponentId="{4D853F91-9E1B-4C56-9288-B051D75E7AF0}" Directory_="bin_Dir" Attributes="256" KeyPath="imm32.dll"/>
+    <ROW Component="kernel.appcore.dll" ComponentId="{6E2D3E14-3711-40F6-A9EA-3BF3EE7E7BFE}" Directory_="bin_Dir" Attributes="256" KeyPath="kernel.appcore.dll"/>
+    <ROW Component="kernel32.dll" ComponentId="{C6629D4F-FCDE-43FB-A3F2-2532537B57B6}" Directory_="bin_Dir" Attributes="256" KeyPath="kernel32.dll"/>
+    <ROW Component="mf.dll" ComponentId="{89868A94-6297-4C4C-B27D-7769A0A1D83D}" Directory_="bin_Dir" Attributes="256" KeyPath="mf.dll"/>
+    <ROW Component="mfc140u.dll" ComponentId="{ED907FEA-A35C-4DD6-8966-FEDEA03DBAA5}" Directory_="bin_Dir" Attributes="256" KeyPath="mfc140u.dll"/>
+    <ROW Component="mfcore.dll" ComponentId="{D53C22B1-1CD9-4B13-B179-A0048D624B13}" Directory_="bin_Dir" Attributes="256" KeyPath="mfcore.dll"/>
+    <ROW Component="mfplat.dll" ComponentId="{8AA77B4B-4724-4DA5-BEEE-8209393DF3FE}" Directory_="bin_Dir" Attributes="256" KeyPath="mfplat.dll"/>
+    <ROW Component="mfreadwrite.dll" ComponentId="{CB6559C3-F107-4C8D-B02F-9CA5CE91ABBF}" Directory_="bin_Dir" Attributes="256" KeyPath="mfreadwrite.dll"/>
+    <ROW Component="msctf.dll" ComponentId="{11EAE8AC-5C11-4A16-8318-F2D9B6A5D7C2}" Directory_="bin_Dir" Attributes="256" KeyPath="msctf.dll"/>
+    <ROW Component="msvcp140.dll" ComponentId="{F081BA2F-C054-4592-B9AA-74BB312EF5FD}" Directory_="bin_Dir" Attributes="256" KeyPath="msvcp140.dll"/>
+    <ROW Component="msvcp_win.dll" ComponentId="{D231D3C0-D382-4A11-8F6E-BF2DADA02E62}" Directory_="bin_Dir" Attributes="256" KeyPath="msvcp_win.dll"/>
+    <ROW Component="msvcrt.dll" ComponentId="{4A15BA55-40F0-4ED3-AB6D-7EFBBABC9FA5}" Directory_="bin_Dir" Attributes="256" KeyPath="msvcrt.dll"/>
+    <ROW Component="mswsock.dll" ComponentId="{3219626D-CB61-4FD5-810F-2668C5CFDAD1}" Directory_="bin_Dir" Attributes="256" KeyPath="mswsock.dll"/>
+    <ROW Component="msxml6.dll" ComponentId="{7F886BC1-2E9B-4B60-9FF2-4EF9AEF47CEA}" Directory_="bin_Dir" Attributes="256" KeyPath="msxml6.dll"/>
+    <ROW Component="ntdll.dll" ComponentId="{E96C30CF-05D4-413B-853C-29E3096AAB05}" Directory_="bin_Dir" Attributes="256" KeyPath="ntdll.dll"/>
+    <ROW Component="ole32.dll" ComponentId="{6A8E36E5-391C-4846-924A-1147D3FF9A79}" Directory_="bin_Dir" Attributes="256" KeyPath="ole32.dll"/>
+    <ROW Component="oleaut32.dll" ComponentId="{48010DC1-8A97-4C8B-A8D5-1803B0927E54}" Directory_="bin_Dir" Attributes="256" KeyPath="oleaut32.dll"/>
+    <ROW Component="opencv_world490.dll" ComponentId="{27C95619-5461-4D3A-9AB1-0FAB5C0A1EAD}" Directory_="bin_Dir" Attributes="256" KeyPath="opencv_world490.dll"/>
+    <ROW Component="rpcrt4.dll" ComponentId="{C6CB9B52-0104-4D85-84A5-FF76ADC83226}" Directory_="bin_Dir" Attributes="256" KeyPath="rpcrt4.dll"/>
+    <ROW Component="rsaenh.dll" ComponentId="{83633AA9-1612-4F2E-BF03-260305182186}" Directory_="bin_Dir" Attributes="256" KeyPath="rsaenh.dll"/>
+    <ROW Component="sechost.dll" ComponentId="{073C42EB-397F-4EAD-9DE3-A739A1D95BD2}" Directory_="bin_Dir" Attributes="256" KeyPath="sechost.dll"/>
+    <ROW Component="shell32.dll" ComponentId="{2EBF6310-9E7D-4965-9C99-940C1F396E56}" Directory_="bin_Dir" Attributes="256" KeyPath="shell32.dll"/>
+    <ROW Component="shlwapi.dll" ComponentId="{E23513F2-3BEA-46AF-8F9D-29A2C17053B1}" Directory_="bin_Dir" Attributes="256" KeyPath="shlwapi.dll"/>
+    <ROW Component="ucrtbase.dll" ComponentId="{E973D484-0A28-4E07-8C4E-69451BBBB726}" Directory_="bin_Dir" Attributes="256" KeyPath="ucrtbase.dll"/>
+    <ROW Component="user32.dll" ComponentId="{1A582DAA-A171-43BE-9218-69BE90AAC39A}" Directory_="bin_Dir" Attributes="256" KeyPath="user32.dll"/>
+    <ROW Component="uxtheme.dll" ComponentId="{D503F4D0-3DF1-4829-8034-724FAA2AF4F5}" Directory_="bin_Dir" Attributes="256" KeyPath="uxtheme.dll"/>
+    <ROW Component="vcruntime140.dll" ComponentId="{0691A070-E3A3-4C1B-8F0B-F57A38F60977}" Directory_="bin_Dir" Attributes="256" KeyPath="vcruntime140.dll"/>
+    <ROW Component="vcruntime140_1.dll" ComponentId="{D6D72A7B-E631-4D48-81C1-EEF284B742D4}" Directory_="bin_Dir" Attributes="256" KeyPath="vcruntime140_1.dll"/>
+    <ROW Component="win32u.dll" ComponentId="{4B8D7E1E-4CDD-4927-93A1-64CA2D92BACB}" Directory_="bin_Dir" Attributes="256" KeyPath="win32u.dll"/>
+    <ROW Component="windows.storage.dll" ComponentId="{20DB5046-BC06-4C14-9AED-A224E75ED2B2}" Directory_="bin_Dir" Attributes="256" KeyPath="windows.storage.dll"/>
+    <ROW Component="wpnapps.dll" ComponentId="{6069BD42-4B80-4D5D-A6F3-D9C1A582C797}" Directory_="bin_Dir" Attributes="256" KeyPath="wpnapps.dll"/>
+    <ROW Component="ws2_32.dll" ComponentId="{55BD5D5E-2A04-4065-925B-6DB6EA6C59D8}" Directory_="bin_Dir" Attributes="256" KeyPath="ws2_32.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
     <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
-    <ROW File="advapi32.dll" Component_="advapi32.dll" FileName="advapi32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\advapi32.dll" SelfReg="false"/>
-    <ROW File="bcrypt.dll" Component_="bcrypt.dll" FileName="bcrypt.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\bcrypt.dll" SelfReg="false"/>
-    <ROW File="bcryptprimitives.dll" Component_="bcryptprimitives.dll" FileName="BCRYPT~1.DLL|bcryptprimitives.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\bcryptprimitives.dll" SelfReg="false"/>
-    <ROW File="cfgmgr32.dll" Component_="cfgmgr32.dll" FileName="cfgmgr32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\cfgmgr32.dll" SelfReg="false"/>
-    <ROW File="clbcatq.dll" Component_="clbcatq.dll" FileName="clbcatq.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\clbcatq.dll" SelfReg="false"/>
-    <ROW File="combase.dll" Component_="combase.dll" FileName="combase.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\combase.dll" SelfReg="false"/>
-    <ROW File="comctl32.dll" Component_="comctl32.dll" FileName="comctl32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\comctl32.dll" SelfReg="false"/>
-    <ROW File="comdlg32.dll" Component_="comdlg32.dll" FileName="comdlg32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\comdlg32.dll" SelfReg="false"/>
-    <ROW File="concrt140d.dll" Component_="concrt140d.dll" FileName="CONCRT~1.DLL|concrt140d.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\concrt140d.dll" SelfReg="false"/>
-    <ROW File="gdi32.dll" Component_="gdi32.dll" FileName="gdi32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\gdi32.dll" SelfReg="false"/>
-    <ROW File="gdi32full.dll" Component_="gdi32full.dll" FileName="GDI32F~1.DLL|gdi32full.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\gdi32full.dll" SelfReg="false"/>
-    <ROW File="GdiPlus.dll" Component_="GdiPlus.dll" FileName="GdiPlus.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\GdiPlus.dll" SelfReg="false"/>
-    <ROW File="imm32.dll" Component_="imm32.dll" FileName="imm32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\imm32.dll" SelfReg="false"/>
-    <ROW File="kernel.appcore.dll" Component_="kernel.appcore.dll" FileName="KERNEL~1.DLL|kernel.appcore.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\kernel.appcore.dll" SelfReg="false"/>
-    <ROW File="kernel32.dll" Component_="kernel32.dll" FileName="kernel32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\kernel32.dll" SelfReg="false"/>
-    <ROW File="KernelBase.dll" Component_="KernelBase.dll" FileName="KERNEL~2.DLL|KernelBase.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\KernelBase.dll" SelfReg="false"/>
-    <ROW File="mf.dll" Component_="mf.dll" FileName="mf.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\mf.dll" SelfReg="false"/>
-    <ROW File="mfc140ud.dll" Component_="mfc140ud.dll" FileName="mfc140ud.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\mfc140ud.dll" SelfReg="false"/>
-    <ROW File="mfcore.dll" Component_="mfcore.dll" FileName="mfcore.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\mfcore.dll" SelfReg="false"/>
-    <ROW File="mfplat.dll" Component_="mfplat.dll" FileName="mfplat.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\mfplat.dll" SelfReg="false"/>
-    <ROW File="mfreadwrite.dll" Component_="mfreadwrite.dll" FileName="MFREAD~1.DLL|mfreadwrite.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\mfreadwrite.dll" SelfReg="false"/>
-    <ROW File="msctf.dll" Component_="msctf.dll" FileName="msctf.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\msctf.dll" SelfReg="false"/>
-    <ROW File="msimg32.dll" Component_="msimg32.dll" FileName="msimg32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\msimg32.dll" SelfReg="false"/>
-    <ROW File="msvcp140.dll" Component_="msvcp140.dll" FileName="msvcp140.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\msvcp140.dll" SelfReg="false"/>
-    <ROW File="msvcp140d.dll" Component_="msvcp140d.dll" FileName="MSVCP1~1.DLL|msvcp140d.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\msvcp140d.dll" SelfReg="false"/>
-    <ROW File="msvcp_win.dll" Component_="msvcp_win.dll" FileName="MSVCP_~1.DLL|msvcp_win.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\msvcp_win.dll" SelfReg="false"/>
-    <ROW File="msvcrt.dll" Component_="msvcrt.dll" FileName="msvcrt.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\msvcrt.dll" SelfReg="false"/>
-    <ROW File="mswsock.dll" Component_="mswsock.dll" FileName="mswsock.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\mswsock.dll" SelfReg="false"/>
-    <ROW File="ntdll.dll" Component_="ntdll.dll" FileName="ntdll.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\ntdll.dll" SelfReg="false"/>
-    <ROW File="ole32.dll" Component_="ole32.dll" FileName="ole32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\ole32.dll" SelfReg="false"/>
-    <ROW File="oleacc.dll" Component_="oleacc.dll" FileName="oleacc.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\oleacc.dll" SelfReg="false"/>
-    <ROW File="oleaut32.dll" Component_="oleaut32.dll" FileName="oleaut32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\oleaut32.dll" SelfReg="false"/>
-    <ROW File="oledlg.dll" Component_="oledlg.dll" FileName="oledlg.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\oledlg.dll" SelfReg="false"/>
-    <ROW File="opencv_videoio_ffmpeg490_64.dll" Component_="opencv_videoio_ffmpeg490_64.dll" FileName="OPENCV~1.DLL|opencv_videoio_ffmpeg490_64.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\opencv_videoio_ffmpeg490_64.dll" SelfReg="false"/>
-    <ROW File="opencv_videoio_msmf490_64.dll" Component_="opencv_videoio_msmf490_64.dll" FileName="OPENCV~2.DLL|opencv_videoio_msmf490_64.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\opencv_videoio_msmf490_64.dll" SelfReg="false"/>
-    <ROW File="opencv_videoio_msmf490_64d.dll" Component_="opencv_videoio_msmf490_64d.dll" FileName="OPENCV~3.DLL|opencv_videoio_msmf490_64d.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\opencv_videoio_msmf490_64d.dll" SelfReg="false"/>
-    <ROW File="opencv_world490.dll" Component_="opencv_world490.dll" FileName="OPENCV~4.DLL|opencv_world490.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\opencv_world490.dll" SelfReg="false"/>
-    <ROW File="opencv_world490d.dll" Component_="opencv_world490d.dll" FileName="OPENCV~5.DLL|opencv_world490d.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\opencv_world490d.dll" SelfReg="false"/>
-    <ROW File="rpcrt4.dll" Component_="rpcrt4.dll" FileName="rpcrt4.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\rpcrt4.dll" SelfReg="false"/>
-    <ROW File="RTWorkQ.dll" Component_="RTWorkQ.dll" FileName="RTWorkQ.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\RTWorkQ.dll" SelfReg="false"/>
-    <ROW File="sechost.dll" Component_="sechost.dll" FileName="sechost.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\sechost.dll" SelfReg="false"/>
-    <ROW File="SHCore.dll" Component_="SHCore.dll" FileName="SHCore.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\SHCore.dll" SelfReg="false"/>
-    <ROW File="shell32.dll" Component_="shell32.dll" FileName="shell32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\shell32.dll" SelfReg="false"/>
-    <ROW File="shlwapi.dll" Component_="shlwapi.dll" FileName="shlwapi.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\shlwapi.dll" SelfReg="false"/>
-    <ROW File="TextInputFramework.dll" Component_="TextInputFramework.dll" FileName="TEXTIN~1.DLL|TextInputFramework.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\TextInputFramework.dll" SelfReg="false"/>
-    <ROW File="TextShaping.dll" Component_="TextShaping.dll" FileName="TEXTSH~1.DLL|TextShaping.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\TextShaping.dll" SelfReg="false"/>
-    <ROW File="ucrtbase.dll" Component_="ucrtbase.dll" FileName="ucrtbase.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\ucrtbase.dll" SelfReg="false"/>
-    <ROW File="ucrtbased.dll" Component_="ucrtbased.dll" FileName="UCRTBA~1.DLL|ucrtbased.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\ucrtbased.dll" SelfReg="false"/>
-    <ROW File="user32.dll" Component_="user32.dll" FileName="user32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\user32.dll" SelfReg="false"/>
-    <ROW File="uxtheme.dll" Component_="uxtheme.dll" FileName="uxtheme.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\uxtheme.dll" SelfReg="false"/>
-    <ROW File="vcruntime140.dll" Component_="vcruntime140.dll" FileName="VCRUNT~1.DLL|vcruntime140.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\vcruntime140.dll" SelfReg="false"/>
-    <ROW File="vcruntime140d.dll" Component_="vcruntime140d.dll" FileName="VCRUNT~2.DLL|vcruntime140d.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\vcruntime140d.dll" SelfReg="false"/>
-    <ROW File="vcruntime140_1d.dll" Component_="vcruntime140_1d.dll" FileName="VCRUNT~3.DLL|vcruntime140_1d.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\vcruntime140_1d.dll" SelfReg="false"/>
-    <ROW File="win32u.dll" Component_="win32u.dll" FileName="win32u.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\win32u.dll" SelfReg="false"/>
-    <ROW File="winmm.dll" Component_="winmm.dll" FileName="winmm.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\winmm.dll" SelfReg="false"/>
-    <ROW File="winspool.drv" Component_="winspool.drv" FileName="winspool.drv" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\winspool.drv" SelfReg="false"/>
-    <ROW File="ws2_32.dll" Component_="ws2_32.dll" FileName="ws2_32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\bin\ws2_32.dll" SelfReg="false"/>
-    <ROW File="icon1.ico" Component_="icon1.ico" FileName="icon1.ico" Attributes="0" SourcePath="..\CTCtrl-beCtrl\image\icon1.ico" SelfReg="false"/>
-    <ROW File="logo.ico" Component_="icon1.ico" FileName="logo.ico" Attributes="0" SourcePath="..\CTCtrl-beCtrl\image\logo.ico" SelfReg="false"/>
-    <ROW File="logo.png" Component_="icon1.ico" FileName="logo.png" Attributes="0" SourcePath="..\CTCtrl-beCtrl\image\logo.png" SelfReg="false"/>
-    <ROW File="sys.ico" Component_="icon1.ico" FileName="sys.ico" Attributes="0" SourcePath="..\CTCtrl-beCtrl\image\sys.ico" SelfReg="false"/>
-    <ROW File="beCtrlServer.exe" Component_="beCtrlServer.exe" FileName="BECTRL~1.EXE|beCtrlServer.exe" Attributes="0" SourcePath="..\CTCtrl-beCtrl\beCtrlServer.exe" SelfReg="false" DigSign="true"/>
-    <ROW File="beCtrlServer.pdb" Component_="beCtrlServer.exe" FileName="BECTRL~1.PDB|beCtrlServer.pdb" Attributes="0" SourcePath="..\CTCtrl-beCtrl\beCtrlServer.pdb" SelfReg="false"/>
+    <ROW File="beCtrlServer.exe" Component_="beCtrlServer.exe" FileName="BECTRL~1.EXE|beCtrlServer.exe" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\beCtrlServer.exe" SelfReg="false" DigSign="true"/>
+    <ROW File="advapi32.dll" Component_="advapi32.dll" FileName="advapi32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\advapi32.dll" SelfReg="false"/>
+    <ROW File="bcrypt.dll" Component_="bcrypt.dll" FileName="bcrypt.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\bcrypt.dll" SelfReg="false"/>
+    <ROW File="bcryptprimitives.dll" Component_="bcryptprimitives.dll" FileName="BCRYPT~1.DLL|bcryptprimitives.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\bcryptprimitives.dll" SelfReg="false"/>
+    <ROW File="cfgmgr32.dll" Component_="cfgmgr32.dll" FileName="cfgmgr32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\cfgmgr32.dll" SelfReg="false"/>
+    <ROW File="clbcatq.dll" Component_="clbcatq.dll" FileName="clbcatq.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\clbcatq.dll" SelfReg="false"/>
+    <ROW File="combase.dll" Component_="combase.dll" FileName="combase.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\combase.dll" SelfReg="false"/>
+    <ROW File="comctl32.dll" Component_="comctl32.dll" FileName="comctl32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\comctl32.dll" SelfReg="false"/>
+    <ROW File="comdlg32.dll" Component_="comdlg32.dll" FileName="comdlg32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\comdlg32.dll" SelfReg="false"/>
+    <ROW File="concrt140.dll" Component_="concrt140.dll" FileName="CONCRT~1.DLL|concrt140.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\concrt140.dll" SelfReg="false"/>
+    <ROW File="CoreMessaging.dll" Component_="CoreMessaging.dll" FileName="COREME~1.DLL|CoreMessaging.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\CoreMessaging.dll" SelfReg="false"/>
+    <ROW File="CoreUIComponents.dll" Component_="CoreUIComponents.dll" FileName="COREUI~1.DLL|CoreUIComponents.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\CoreUIComponents.dll" SelfReg="false"/>
+    <ROW File="cryptbase.dll" Component_="cryptbase.dll" FileName="CRYPTB~1.DLL|cryptbase.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\cryptbase.dll" SelfReg="false"/>
+    <ROW File="cryptsp.dll" Component_="cryptsp.dll" FileName="cryptsp.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\cryptsp.dll" SelfReg="false"/>
+    <ROW File="gdi32.dll" Component_="gdi32.dll" FileName="gdi32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\gdi32.dll" SelfReg="false"/>
+    <ROW File="gdi32full.dll" Component_="gdi32full.dll" FileName="GDI32F~1.DLL|gdi32full.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\gdi32full.dll" SelfReg="false"/>
+    <ROW File="GdiPlus.dll" Component_="GdiPlus.dll" FileName="GdiPlus.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\GdiPlus.dll" SelfReg="false"/>
+    <ROW File="imm32.dll" Component_="imm32.dll" FileName="imm32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\imm32.dll" SelfReg="false"/>
+    <ROW File="kernel.appcore.dll" Component_="kernel.appcore.dll" FileName="KERNEL~1.DLL|kernel.appcore.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\kernel.appcore.dll" SelfReg="false"/>
+    <ROW File="kernel32.dll" Component_="kernel32.dll" FileName="kernel32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\kernel32.dll" SelfReg="false"/>
+    <ROW File="KernelBase.dll" Component_="KernelBase.dll" FileName="KERNEL~2.DLL|KernelBase.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\KernelBase.dll" SelfReg="false"/>
+    <ROW File="mf.dll" Component_="mf.dll" FileName="mf.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\mf.dll" SelfReg="false"/>
+    <ROW File="mfc140u.dll" Component_="mfc140u.dll" FileName="mfc140u.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\mfc140u.dll" SelfReg="false"/>
+    <ROW File="mfcore.dll" Component_="mfcore.dll" FileName="mfcore.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\mfcore.dll" SelfReg="false"/>
+    <ROW File="mfplat.dll" Component_="mfplat.dll" FileName="mfplat.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\mfplat.dll" SelfReg="false"/>
+    <ROW File="mfreadwrite.dll" Component_="mfreadwrite.dll" FileName="MFREAD~1.DLL|mfreadwrite.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\mfreadwrite.dll" SelfReg="false"/>
+    <ROW File="msctf.dll" Component_="msctf.dll" FileName="msctf.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\msctf.dll" SelfReg="false"/>
+    <ROW File="msvcp_win.dll" Component_="msvcp_win.dll" FileName="MSVCP_~1.DLL|msvcp_win.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\msvcp_win.dll" SelfReg="false"/>
+    <ROW File="msvcp140.dll" Component_="msvcp140.dll" FileName="msvcp140.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\msvcp140.dll" SelfReg="false"/>
+    <ROW File="msvcrt.dll" Component_="msvcrt.dll" FileName="msvcrt.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\msvcrt.dll" SelfReg="false"/>
+    <ROW File="mswsock.dll" Component_="mswsock.dll" FileName="mswsock.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\mswsock.dll" SelfReg="false"/>
+    <ROW File="msxml6.dll" Component_="msxml6.dll" FileName="msxml6.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\msxml6.dll" SelfReg="false"/>
+    <ROW File="ntdll.dll" Component_="ntdll.dll" FileName="ntdll.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\ntdll.dll" SelfReg="false"/>
+    <ROW File="ole32.dll" Component_="ole32.dll" FileName="ole32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\ole32.dll" SelfReg="false"/>
+    <ROW File="oleaut32.dll" Component_="oleaut32.dll" FileName="oleaut32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\oleaut32.dll" SelfReg="false"/>
+    <ROW File="OneCoreUAPCommonProxyStub.dll" Component_="OneCoreUAPCommonProxyStub.dll" FileName="ONECOR~1.DLL|OneCoreUAPCommonProxyStub.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\OneCoreUAPCommonProxyStub.dll" SelfReg="false"/>
+    <ROW File="opencv_world490.dll" Component_="opencv_world490.dll" FileName="OPENCV~1.DLL|opencv_world490.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\opencv_world490.dll" SelfReg="false"/>
+    <ROW File="rpcrt4.dll" Component_="rpcrt4.dll" FileName="rpcrt4.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\rpcrt4.dll" SelfReg="false"/>
+    <ROW File="rsaenh.dll" Component_="rsaenh.dll" FileName="rsaenh.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\rsaenh.dll" SelfReg="false"/>
+    <ROW File="RTWorkQ.dll" Component_="RTWorkQ.dll" FileName="RTWorkQ.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\RTWorkQ.dll" SelfReg="false"/>
+    <ROW File="sechost.dll" Component_="sechost.dll" FileName="sechost.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\sechost.dll" SelfReg="false"/>
+    <ROW File="SHCore.dll" Component_="SHCore.dll" FileName="SHCore.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\SHCore.dll" SelfReg="false"/>
+    <ROW File="shell32.dll" Component_="shell32.dll" FileName="shell32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\shell32.dll" SelfReg="false"/>
+    <ROW File="shlwapi.dll" Component_="shlwapi.dll" FileName="shlwapi.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\shlwapi.dll" SelfReg="false"/>
+    <ROW File="TextInputFramework.dll" Component_="TextInputFramework.dll" FileName="TEXTIN~1.DLL|TextInputFramework.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\TextInputFramework.dll" SelfReg="false"/>
+    <ROW File="TextShaping.dll" Component_="TextShaping.dll" FileName="TEXTSH~1.DLL|TextShaping.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\TextShaping.dll" SelfReg="false"/>
+    <ROW File="ucrtbase.dll" Component_="ucrtbase.dll" FileName="ucrtbase.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\ucrtbase.dll" SelfReg="false"/>
+    <ROW File="user32.dll" Component_="user32.dll" FileName="user32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\user32.dll" SelfReg="false"/>
+    <ROW File="uxtheme.dll" Component_="uxtheme.dll" FileName="uxtheme.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\uxtheme.dll" SelfReg="false"/>
+    <ROW File="vcruntime140.dll" Component_="vcruntime140.dll" FileName="VCRUNT~1.DLL|vcruntime140.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\vcruntime140.dll" SelfReg="false"/>
+    <ROW File="vcruntime140_1.dll" Component_="vcruntime140_1.dll" FileName="VCRUNT~2.DLL|vcruntime140_1.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\vcruntime140_1.dll" SelfReg="false"/>
+    <ROW File="win32u.dll" Component_="win32u.dll" FileName="win32u.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\win32u.dll" SelfReg="false"/>
+    <ROW File="windows.storage.dll" Component_="windows.storage.dll" FileName="WINDOW~1.DLL|windows.storage.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\windows.storage.dll" SelfReg="false"/>
+    <ROW File="WinTypes.dll" Component_="WinTypes.dll" FileName="WinTypes.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\WinTypes.dll" SelfReg="false"/>
+    <ROW File="wpnapps.dll" Component_="wpnapps.dll" FileName="wpnapps.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\wpnapps.dll" SelfReg="false"/>
+    <ROW File="ws2_32.dll" Component_="ws2_32.dll" FileName="ws2_32.dll" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\bin\ws2_32.dll" SelfReg="false"/>
+    <ROW File="icon1.ico" Component_="icon1.ico" FileName="icon1.ico" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\image\icon1.ico" SelfReg="false"/>
+    <ROW File="logo.ico" Component_="icon1.ico" FileName="logo.ico" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\image\logo.ico" SelfReg="false"/>
+    <ROW File="logo.png" Component_="icon1.ico" FileName="logo.png" Attributes="0" SourcePath="..\CTCtrl-beCtrl\release\image\logo.png" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.AiPersistentPropComponent">
     <ROW Property="AI_INSTALLPERUSER" Registry="AI_INSTALLPERUSER" HklmSearch="AI_INSTALLPERUSER" HkcuSearch="AI_INSTALLPERUSER_1" Hklm64Search="AI_INSTALLPERUSER_2" Hkcu64Search="AI_INSTALLPERUSER_3"/>
@@ -234,16 +233,42 @@
     <ROW Name="Prereq.dll" SourcePath="&lt;AI_CUSTACTS&gt;Prereq.dll"/>
     <ROW Name="SoftwareDetector.dll" SourcePath="&lt;AI_CUSTACTS&gt;SoftwareDetector.dll"/>
     <ROW Name="aicustact.dll" SourcePath="&lt;AI_CUSTACTS&gt;aicustact.dll"/>
-    <ROW Name="logo.ico" SourcePath="..\CTCtrl-beCtrl\image\logo.ico"/>
-    <ROW Name="logo.png" SourcePath="..\CTCtrl-beCtrl\image\logo.png"/>
+    <ROW Name="logo.ico_1" SourcePath="..\CTCtrl-beCtrl\release\image\logo.ico"/>
     <ROW Name="lzmaextractor.dll" SourcePath="&lt;AI_CUSTACTS&gt;lzmaextractor.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiControlComponent">
+    <ROW Dialog_="AdminInstallPointDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="1100" MsiKey="AdminInstallPointDlg#LogoIcon"/>
+    <ROW Dialog_="AdminWelcomeDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="700" MsiKey="AdminWelcomeDlg#LogoIcon"/>
+    <ROW Dialog_="CustomizeDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="1000" MsiKey="CustomizeDlg#LogoIcon"/>
+    <ROW Dialog_="ExitDialog" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="900" MsiKey="ExitDialog#LogoIcon"/>
+    <ROW Dialog_="FatalError" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="800" MsiKey="FatalError#LogoIcon"/>
     <ROW Dialog_="InstallDlg" Control="InstallDlgDialogInitializer" Type="DialogInitializer" X="0" Y="0" Width="0" Height="0" Attributes="0" Order="-1" TextLocId="-" HelpLocId="-" ExtDataLocId="-"/>
+    <ROW Dialog_="InstallDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="1100" MsiKey="InstallDlg#LogoIcon"/>
+    <ROW Dialog_="InstallTypeDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="1000" MsiKey="InstallTypeDlg#LogoIcon"/>
     <ROW Dialog_="LicenseAgreementDlg" Control="AgreementText" Type="ScrollableText" X="275" Y="122" Width="281" Height="117" Attributes="7" Text="..\CTCtrl协议.rtf" Order="400" TextLocId="Control.Text.LicenseAgreementDlg#AgreementText" MsiKey="LicenseAgreementDlg#AgreementText"/>
+    <ROW Dialog_="LicenseAgreementDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="700" MsiKey="LicenseAgreementDlg#LogoIcon"/>
+    <ROW Dialog_="MaintenanceTypeDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="600" MsiKey="MaintenanceTypeDlg#LogoIcon"/>
+    <ROW Dialog_="MaintenanceWelcomeDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="700" MsiKey="MaintenanceWelcomeDlg#LogoIcon"/>
+    <ROW Dialog_="PatchWelcomeDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="700" MsiKey="PatchWelcomeDlg#LogoIcon"/>
+    <ROW Dialog_="PrepareDlg" Control="AppName" Type="Text" X="62" Y="24" Width="200" Height="23" Attributes="196611" Text="[ProductName]" TextStyle="AppName" Order="900" TextLocId="Modern.Control.Text.Dlg#AppName" MsiKey="PrepareDlg#AppName"/>
+    <ROW Dialog_="PrepareDlg" Control="Manufacturer" Type="Text" X="61" Y="16" Width="300" Height="12" Attributes="196611" Text="[Manufacturer]" TextStyle="Manufacturer" Order="1000" TextLocId="Modern.Control.Text.Dlg#Manufacturer" MsiKey="PrepareDlg#Manufacturer"/>
+    <ROW Dialog_="PrepareDlg" Control="Setup" Type="Text" X="265" Y="24" Width="158" Height="23" Attributes="196611" Text="安装" TextStyle="[AI_SetupFont]" Order="1100" TextLocId="Modern.Control.Text.Dlg#Setup" MsiKey="PrepareDlg#Setup"/>
+    <ROW Dialog_="PrepareDlg" Control="Description" Type="Text" X="8" Y="105" Width="248" Height="50" Attributes="196611" Text="请稍侯，[Wizard]正准备指导您完成安装。" Order="1200" TextLocId="Modern.Control.Text.PrepareDlg#Description" MsiKey="PrepareDlg#Description"/>
+    <ROW Dialog_="PrepareDlg" Control="CompanyLogo" Type="Bitmap" X="285" Y="104" Width="265" Height="229" Attributes="1048577" Text="[CompanyLogo]" Order="1300" MsiKey="PrepareDlg#CompanyLogo"/>
+    <ROW Dialog_="PrepareDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="1400"/>
+    <ROW Dialog_="ProgressDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="900" MsiKey="ProgressDlg#LogoIcon"/>
     <ROW Dialog_="ReadmeDlg" Control="ReadmeText" Type="ScrollableText" X="8" Y="108" Width="248" Height="255" Attributes="7" Text="..\CTCtrl协议.rtf" Order="400" TextLocId="Control.Text.ReadmeDlg#ReadmeText" MsiKey="ReadmeDlg#ReadmeText"/>
+    <ROW Dialog_="ReadmeDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="900" MsiKey="ReadmeDlg#LogoIcon"/>
+    <ROW Dialog_="ResumeDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="700" MsiKey="ResumeDlg#LogoIcon"/>
     <ROW Dialog_="SetupTypeDlg" Control="CustomInstallButton" Type="CommandLinkButton" X="8" Y="158" Width="243" Height="63" Attributes="6815744" Text="[CustomIconEx]" Help="允许用户选择将要安装的程序功能及其安装位置。推荐高级用户使用。|" Order="600" HelpLocId="Modern.Control.Help.SetupTypeDlg#CustomInstallButton" MsiKey="SetupTypeDlg#CustomInstallButton" ExtType="CommandLinkButton" ExtData="自定义(&amp;U)" ExtDataLocId="Control.Text.SetupTypeDlg#CustomLabel"/>
     <ROW Dialog_="SetupTypeDlg" Control="CompleteInstallButton" Type="CommandLinkButton" X="8" Y="235" Width="243" Height="63" Attributes="6815744" Text="[CompleteIconEx]" Help="所有的程序功能将被安装 (要求较多的磁盘空间)。|" Order="700" HelpLocId="Modern.Control.Help.SetupTypeDlg#CompleteInstallButton" MsiKey="SetupTypeDlg#CompleteInstallButton" ExtType="CommandLinkButton" ExtData="完全(&amp;O)" ExtDataLocId="Control.Text.SetupTypeDlg#CompleteLabel"/>
+    <ROW Dialog_="SetupTypeDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="900" MsiKey="SetupTypeDlg#LogoIcon"/>
+    <ROW Dialog_="UserExit" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="800" MsiKey="UserExit#LogoIcon"/>
+    <ROW Dialog_="VerifyReadyDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="700" MsiKey="VerifyReadyDlg#LogoIcon"/>
+    <ROW Dialog_="VerifyRemoveDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="700" MsiKey="VerifyRemoveDlg#LogoIcon"/>
+    <ROW Dialog_="VerifyRepairDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="600" MsiKey="VerifyRepairDlg#LogoIcon"/>
+    <ROW Dialog_="WelcomeDlg" Control="LogoIcon" Type="Icon" X="16" Y="14" Width="36" Height="37" Attributes="7340033" Text="[LogoIcon]" Order="400" MsiKey="WelcomeDlg#LogoIcon"/>
+    <ATTRIBUTE name="DeletedRows" value="PrepareDlg#LogoIcon"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiControlEventComponent">
     <ROW Dialog_="WelcomeDlg" Control_="Next" Event="NewDialog" Argument="InstallTypeDlg" Condition="AI_INSTALL" Ordering="1"/>
@@ -321,11 +346,12 @@
     <ROW Dialog="PrepareDlg" HCentering="50" VCentering="50" Width="568" Height="412" Attributes="5" Title="[ProductName] [Setup]" Control_Default="Cancel" Control_Cancel="Cancel" TitleLocId="Dialog.PrepareDlg" MsiKey="PrepareDlg"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiEnvComponent">
-    <ROW Environment="Path" Name="=-*Path" Value="[~];[ProgramFiles64Folder][Manufacturer]\[ProductName]\bin" Component_="ws2_32.dll"/>
+    <ROW Environment="Path" Name="=-*Path" Value="[~];[APPDIR]bin" Component_="AI_ExePath"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatCompsComponent">
     <ROW Feature_="MainFeature" Component_="APPDIR"/>
     <ROW Feature_="MainFeature" Component_="ProductInformation"/>
+    <ROW Feature_="MainFeature" Component_="beCtrlServer.exe"/>
     <ROW Feature_="MainFeature" Component_="advapi32.dll"/>
     <ROW Feature_="MainFeature" Component_="bcrypt.dll"/>
     <ROW Feature_="MainFeature" Component_="bcryptprimitives.dll"/>
@@ -334,7 +360,11 @@
     <ROW Feature_="MainFeature" Component_="combase.dll"/>
     <ROW Feature_="MainFeature" Component_="comctl32.dll"/>
     <ROW Feature_="MainFeature" Component_="comdlg32.dll"/>
-    <ROW Feature_="MainFeature" Component_="concrt140d.dll"/>
+    <ROW Feature_="MainFeature" Component_="concrt140.dll"/>
+    <ROW Feature_="MainFeature" Component_="CoreMessaging.dll"/>
+    <ROW Feature_="MainFeature" Component_="CoreUIComponents.dll"/>
+    <ROW Feature_="MainFeature" Component_="cryptbase.dll"/>
+    <ROW Feature_="MainFeature" Component_="cryptsp.dll"/>
     <ROW Feature_="MainFeature" Component_="gdi32.dll"/>
     <ROW Feature_="MainFeature" Component_="gdi32full.dll"/>
     <ROW Feature_="MainFeature" Component_="GdiPlus.dll"/>
@@ -343,28 +373,25 @@
     <ROW Feature_="MainFeature" Component_="kernel32.dll"/>
     <ROW Feature_="MainFeature" Component_="KernelBase.dll"/>
     <ROW Feature_="MainFeature" Component_="mf.dll"/>
-    <ROW Feature_="MainFeature" Component_="mfc140ud.dll"/>
+    <ROW Feature_="MainFeature" Component_="mfc140u.dll"/>
     <ROW Feature_="MainFeature" Component_="mfcore.dll"/>
     <ROW Feature_="MainFeature" Component_="mfplat.dll"/>
     <ROW Feature_="MainFeature" Component_="mfreadwrite.dll"/>
     <ROW Feature_="MainFeature" Component_="msctf.dll"/>
-    <ROW Feature_="MainFeature" Component_="msimg32.dll"/>
-    <ROW Feature_="MainFeature" Component_="msvcp140.dll"/>
-    <ROW Feature_="MainFeature" Component_="msvcp140d.dll"/>
     <ROW Feature_="MainFeature" Component_="msvcp_win.dll"/>
+    <ROW Feature_="MainFeature" Component_="msvcp140.dll"/>
     <ROW Feature_="MainFeature" Component_="msvcrt.dll"/>
     <ROW Feature_="MainFeature" Component_="mswsock.dll"/>
+    <ROW Feature_="MainFeature" Component_="msxml6.dll"/>
+    <ROW Feature_="MainFeature" Component_="AI_INSTALLPERUSER"/>
+    <ROW Feature_="MainFeature" Component_="AI_ExePath"/>
     <ROW Feature_="MainFeature" Component_="ntdll.dll"/>
     <ROW Feature_="MainFeature" Component_="ole32.dll"/>
-    <ROW Feature_="MainFeature" Component_="oleacc.dll"/>
     <ROW Feature_="MainFeature" Component_="oleaut32.dll"/>
-    <ROW Feature_="MainFeature" Component_="oledlg.dll"/>
-    <ROW Feature_="MainFeature" Component_="opencv_videoio_ffmpeg490_64.dll"/>
-    <ROW Feature_="MainFeature" Component_="opencv_videoio_msmf490_64.dll"/>
-    <ROW Feature_="MainFeature" Component_="opencv_videoio_msmf490_64d.dll"/>
+    <ROW Feature_="MainFeature" Component_="OneCoreUAPCommonProxyStub.dll"/>
     <ROW Feature_="MainFeature" Component_="opencv_world490.dll"/>
-    <ROW Feature_="MainFeature" Component_="opencv_world490d.dll"/>
     <ROW Feature_="MainFeature" Component_="rpcrt4.dll"/>
+    <ROW Feature_="MainFeature" Component_="rsaenh.dll"/>
     <ROW Feature_="MainFeature" Component_="RTWorkQ.dll"/>
     <ROW Feature_="MainFeature" Component_="sechost.dll"/>
     <ROW Feature_="MainFeature" Component_="SHCore.dll"/>
@@ -373,23 +400,19 @@
     <ROW Feature_="MainFeature" Component_="TextInputFramework.dll"/>
     <ROW Feature_="MainFeature" Component_="TextShaping.dll"/>
     <ROW Feature_="MainFeature" Component_="ucrtbase.dll"/>
-    <ROW Feature_="MainFeature" Component_="ucrtbased.dll"/>
     <ROW Feature_="MainFeature" Component_="user32.dll"/>
     <ROW Feature_="MainFeature" Component_="uxtheme.dll"/>
     <ROW Feature_="MainFeature" Component_="vcruntime140.dll"/>
-    <ROW Feature_="MainFeature" Component_="vcruntime140d.dll"/>
-    <ROW Feature_="MainFeature" Component_="vcruntime140_1d.dll"/>
+    <ROW Feature_="MainFeature" Component_="vcruntime140_1.dll"/>
     <ROW Feature_="MainFeature" Component_="win32u.dll"/>
-    <ROW Feature_="MainFeature" Component_="winmm.dll"/>
-    <ROW Feature_="MainFeature" Component_="winspool.drv"/>
-    <ROW Feature_="MainFeature" Component_="AI_INSTALLPERUSER"/>
-    <ROW Feature_="MainFeature" Component_="AI_ExePath"/>
+    <ROW Feature_="MainFeature" Component_="windows.storage.dll"/>
+    <ROW Feature_="MainFeature" Component_="WinTypes.dll"/>
+    <ROW Feature_="MainFeature" Component_="wpnapps.dll"/>
     <ROW Feature_="MainFeature" Component_="ws2_32.dll"/>
-    <ROW Feature_="MainFeature" Component_="beCtrlServer.exe"/>
     <ROW Feature_="MainFeature" Component_="icon1.ico"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
-    <ROW Name="logo.exe" SourcePath="..\CTCtrl-beCtrl\image\logo.ico" Index="0"/>
+    <ROW Name="logo_1.exe" SourcePath="..\CTCtrl-beCtrl\release\image\logo.ico" Index="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
     <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>
@@ -425,6 +448,8 @@
     <ROW Action="AI_SETMIXINSTLOCATION" Sequence="748"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiLaunchConditionsComponent">
+    <ROW Condition="( Version9X OR ( NOT VersionNT64 ) OR ( VersionNT64 AND ((VersionNT64 &lt;&gt; 600) OR (MsiNTProductType &lt;&gt; 1)) AND ((VersionNT64 &lt;&gt; 600) OR (MsiNTProductType = 1)) AND ((VersionNT64 &lt;&gt; 601) OR (MsiNTProductType &lt;&gt; 1)) AND ((VersionNT64 &lt;&gt; 601) OR (MsiNTProductType = 1)) AND ((VersionNT64 &lt;&gt; 602) OR (MsiNTProductType &lt;&gt; 1)) ) )" Description="[ProductName] 无法安装在以下 Windows 版本上: [WindowsTypeNT64Display] ." DescriptionLocId="AI.LaunchCondition.NoSpecificNT64" IsPredefined="true" Builds="DefaultBuild"/>
+    <ROW Condition="( Version9X OR VersionNT64 OR ( VersionNT AND ((VersionNT &lt;&gt; 600) OR (MsiNTProductType &lt;&gt; 1)) AND ((VersionNT &lt;&gt; 600) OR (MsiNTProductType = 1)) AND (VersionNT &lt;&gt; 601) AND (VersionNT &lt;&gt; 602) ) )" Description="[ProductName] 无法安装在以下 Windows 版本上: [WindowsTypeNTDisplay] ." DescriptionLocId="AI.LaunchCondition.NoSpecificNT" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="((VersionNT &lt;&gt; 501) AND (VersionNT &lt;&gt; 502))" Description="[ProductName] 无法安装在 [WindowsTypeNT5XDisplay]." DescriptionLocId="AI.LaunchCondition.NoNT5X" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="(VersionNT &lt;&gt; 400)" Description="[ProductName] 无法安装在 [WindowsTypeNT40Display]." DescriptionLocId="AI.LaunchCondition.NoNT40" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="(VersionNT &lt;&gt; 500)" Description="[ProductName] 无法安装在 [WindowsTypeNT50Display]." DescriptionLocId="AI.LaunchCondition.NoNT50" IsPredefined="true" Builds="DefaultBuild"/>
@@ -455,7 +480,7 @@
     <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
-    <ROW Shortcut="CTCtrlbeCtrl" Directory_="DesktopFolder" Name="CTCTRL~1|CTCtrl-beCtrl" Component_="beCtrlServer.exe" Target="[#beCtrlServer.exe]" Description="跨时空控制台——被控端" Hotkey="0" Icon_="logo.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR" Advertised="true"/>
+    <ROW Shortcut="CTCtrlbeCtrl" Directory_="DesktopFolder" Name="CTCTRL~1|CTCtrl-beCtrl" Component_="beCtrlServer.exe" Target="[#beCtrlServer.exe]" Hotkey="0" Icon_="logo_1.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiTextStyleComponent">
     <ROW TextStyle="Setup" FaceName="Tahoma" Size="18" Color="16766625" MultiBuildColor="DefaultBuild:16775620" StyleBits="0" MsiKey="Setup"/>

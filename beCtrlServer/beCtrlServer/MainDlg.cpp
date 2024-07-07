@@ -2,26 +2,38 @@
 //
 
 #include "pch.h"
-#include "beCtrlServer.h"
 #include "MainDlg.h"
+#include "beCtrlServer.h"
 #include "afxdialogex.h"
+#include <Richedit.h>
+
+#include "Command.h"
 
 
 // CMainDlg 对话框
 
-IMPLEMENT_DYNAMIC(CMainDlg, CDialogEx)
+IMPLEMENT_DYNAMIC(CLoginDlg, CDialogEx)
 
-CMainDlg::CMainDlg(DWORD mainId /*=ERROR_INVALID_THREAD_ID*/, CWnd* pParent /*=nullptr*/)
+CLoginDlg::CLoginDlg(
+	DWORD mainId /*=ERROR_INVALID_THREAD_ID*/,
+	void* pCom    /*=nullptr*/,
+	CWnd* pParent /*=nullptr*/
+)
 	: CDialog(IDD_DLG_LOGIN, pParent)
 	, m_mainThreadId(mainId)
 	, m_pOldFont(NULL)
 	, m_pEditAccount(NULL)
 	, m_pEditPassword(NULL)
+	, m_pEckAutoLogin(NULL)
+	, m_pEckRememberPwd(NULL)
+	, m_bEckRememberPwd(false)
+	, m_bEckAutoLogin(false)
 	, m_bAccTextEmpty(false)
 	, m_bPwTextEmpty(false)
+	, m_pCommand((CCommand*)pCom)
 { }
 
-CMainDlg::~CMainDlg()
+CLoginDlg::~CLoginDlg()
 {
 	m_pOldFont->DeleteObject();
 	if (m_pEditAccount != NULL) {
@@ -32,15 +44,23 @@ CMainDlg::~CMainDlg()
 		m_pEditPassword->DestroyWindow();
 		m_pEditPassword = NULL;
 	}
+	if (m_pEckAutoLogin != NULL) {
+		m_pEckAutoLogin->DestroyWindow();
+		m_pEckAutoLogin = NULL;
+	}
+	if (m_pEckRememberPwd != NULL) {
+		m_pEckRememberPwd->DestroyWindow();
+		m_pEckRememberPwd = NULL;
+	}
 	DestroyWindow();
 }
 
-void CMainDlg::DoDataExchange(CDataExchange* pDX)
+void CLoginDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 }
 
-LRESULT CMainDlg::OnTrayiconNoTify(WPARAM wParam, LPARAM lParam)
+LRESULT CLoginDlg::OnTrayiconNoTify(WPARAM wParam, LPARAM lParam)
 {
 	// printf("wParam %lld lParam %lld\n", wParam, lParam);
 	if (wParam == 1) {
@@ -68,29 +88,34 @@ LRESULT CMainDlg::OnTrayiconNoTify(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-BEGIN_MESSAGE_MAP(CMainDlg, CDialog)
-	ON_MESSAGE(WM_TRAYICON_NOTIFY, &CMainDlg::OnTrayiconNoTify)
-	ON_COMMAND(ID_CTRLCODE, &CMainDlg::OnCtrlcode)
-	ON_COMMAND(ID_SETING, &CMainDlg::OnSeting)
-	ON_COMMAND(ID_RESART, &CMainDlg::OnResart)
-	ON_COMMAND(ID_EXIT, &CMainDlg::OnExit)
-	ON_EN_SETFOCUS(IDC_EDIT_ACCOUNT, &CMainDlg::OnEnSetfocusEditAccount)
-	ON_EN_SETFOCUS(IDC_EDIT_PASSWORD, &CMainDlg::OnEnSetfocusEditPassword)
+void CLoginDlg::SetItemFont(CEdit* control, int FontSize, LPCTSTR lpszFaceName)
+{
+	CFont font;
+	font.CreatePointFont(FontSize, lpszFaceName, NULL);
+	control->SetFont(&font);
+}
+
+BEGIN_MESSAGE_MAP(CLoginDlg, CDialog)
+	ON_MESSAGE(WM_TRAYICON_NOTIFY, &CLoginDlg::OnTrayiconNoTify)
+	ON_COMMAND(ID_CTRLCODE, &CLoginDlg::OnCtrlcode)
+	ON_COMMAND(ID_SETING, &CLoginDlg::OnSeting)
+	ON_COMMAND(ID_RESART, &CLoginDlg::OnResart)
+	ON_COMMAND(ID_EXIT, &CLoginDlg::OnExit)
+	ON_EN_SETFOCUS(IDC_EDIT_ACCOUNT, &CLoginDlg::OnEnSetfocusEditAccount)
+	ON_EN_SETFOCUS(IDC_EDIT_PASSWORD, &CLoginDlg::OnEnSetfocusEditPassword)
 	ON_WM_CTLCOLOR()
-	ON_EN_KILLFOCUS(IDC_EDIT_ACCOUNT, &CMainDlg::OnEnKillfocusEditAccount)
-	ON_EN_KILLFOCUS(IDC_EDIT_PASSWORD, &CMainDlg::OnEnKillfocusEditPassword)
-	ON_BN_CLICKED(ID_CANCEL, &CMainDlg::OnBnClickedCancel)
-	ON_BN_CLICKED(ID_LOGIN, &CMainDlg::OnBnClickedLogin)
+	ON_EN_KILLFOCUS(IDC_EDIT_ACCOUNT, &CLoginDlg::OnEnKillfocusEditAccount)
+	ON_EN_KILLFOCUS(IDC_EDIT_PASSWORD, &CLoginDlg::OnEnKillfocusEditPassword)
+	ON_BN_CLICKED(ID_CANCEL, &CLoginDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(ID_LOGIN, &CLoginDlg::OnBnClickedLogin)
+	ON_BN_CLICKED(IDC_CEK_REMEMBERPWD, &CLoginDlg::OnBnClickedCekRememberpwd)
+	ON_BN_CLICKED(IDC_CEK_AUTOLOGIN, &CLoginDlg::OnBnClickedCekAutologin)
 END_MESSAGE_MAP()
 
-#include <Richedit.h>
-
-
 // CMainDlg 消息处理程序
-BOOL CMainDlg::OnInitDialog()
+BOOL CLoginDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
 	// 在此添加额外的初始化
 
 	// 设置对话框为无底部状态栏模式
@@ -100,7 +125,8 @@ BOOL CMainDlg::OnInitDialog()
 	// 获取对话框中的账户和密码Edit控件
 	m_pEditAccount = (CEdit*)GetDlgItem(IDC_EDIT_ACCOUNT);
 	m_pEditPassword = (CEdit*)GetDlgItem(IDC_EDIT_PASSWORD);
-
+	m_pEckAutoLogin = (CButton*)GetDlgItem(IDC_CEK_AUTOLOGIN);
+	m_pEckRememberPwd = (CButton*)GetDlgItem(IDC_CEK_REMEMBERPWD);
 
 	// 设置字体的样式
 	/*
@@ -108,44 +134,74 @@ BOOL CMainDlg::OnInitDialog()
 	font.CreatePointFont(100, _T("微软雅黑"), NULL);
 	m_pEditAccount->SetFont(&font);
 	m_pEditPassword->SetFont(&font);*/
-	SetItemFont(m_pEditAccount);
-	SetItemFont(m_pEditPassword);
-	// 设置默认显示文字
-	m_pEditAccount->SetWindowText(_T("请输入电话号码"));
-	m_pEditPassword->SetWindowText(_T("请输入密码"));
+	if (m_bAccTextEmpty == false) {
+		SetItemFont(m_pEditAccount);
+		m_pEditAccount->SetWindowText(_T("请输入电话号码"));
+	}
+	else {
+		m_pEditAccount->SetWindowText(m_EditAccountText);
+	}
+	if (m_bPwTextEmpty == false) {
+		SetItemFont(m_pEditPassword);
+		// 设置默认显示文字
+		m_pEditPassword->SetWindowText(_T("请输入密码"));
+	}
+	else {
+		m_pEditPassword->SetWindowText(m_EditPasswordText);
+		m_pEditPassword->SetPasswordChar('*');
+	}
+	m_pEckAutoLogin->SetCheck((m_bEckAutoLogin == true ? BST_CHECKED : BST_UNCHECKED));
+	m_pEckRememberPwd->SetCheck((m_bEckRememberPwd == true ? BST_CHECKED : BST_UNCHECKED));
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-void CMainDlg::OnCtrlcode()
+void CLoginDlg::OnCtrlcode()
 {
 	TRACE(_T("点击了查看控制码\n"));
-	// 在此添加命令处理程序代码
+	// 弹出一个消息框
+	std::wstring firstLine = L"控制码";
+	std::wstring secondLine = L"当前设备控制码：\"123456\"";
+	CToast::ShowNotification(firstLine, secondLine);
 }
 
-void CMainDlg::OnSeting()
+void CLoginDlg::OnSeting()
 {
 	TRACE(_T("点击了设置\n"));
 	// 在此添加命令处理程序代码
+
+	// m_pCommand
+
+	m_pCommand->m_settingDlg.DoModal();
+
 }
 
-void CMainDlg::OnResart()
+void CLoginDlg::OnResart()
 {
 	TRACE(_T("点击了重启"));
+	// 先给服务器发送设备下线指令
+
+
+
 	PostThreadMessage(m_mainThreadId, RESARTAPP, 0, 0);
 	// 在此添加命令处理程序代码
 }
 
-void CMainDlg::OnExit()
+void CLoginDlg::OnExit()
 {
 	TRACE(_T("点击了退出"));
+
+
+
+
+
 	PostThreadMessage(m_mainThreadId, CLOSEAPP, 0, 0);
 	// 在此添加命令处理程序代码
 }
 
 
-void CMainDlg::OnEnSetfocusEditAccount()
+void CLoginDlg::OnEnSetfocusEditAccount()
 {
 	// 在此添加控件通知处理程序代码
 	CString str;
@@ -164,7 +220,7 @@ void CMainDlg::OnEnSetfocusEditAccount()
 }
 
 
-void CMainDlg::OnEnSetfocusEditPassword()
+void CLoginDlg::OnEnSetfocusEditPassword()
 {
 	// 在此添加控件通知处理程序代码
 	CString str;
@@ -183,7 +239,7 @@ void CMainDlg::OnEnSetfocusEditPassword()
 }
 
 
-HBRUSH CMainDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CLoginDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
@@ -212,7 +268,7 @@ HBRUSH CMainDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 }
 
 
-void CMainDlg::OnEnKillfocusEditAccount()
+void CLoginDlg::OnEnKillfocusEditAccount()
 {
 	// 在此添加控件通知处理程序代码
 	CString str;
@@ -225,7 +281,7 @@ void CMainDlg::OnEnKillfocusEditAccount()
 }
 
 
-void CMainDlg::OnEnKillfocusEditPassword()
+void CLoginDlg::OnEnKillfocusEditPassword()
 {
 	// 在此添加控件通知处理程序代码
 	CString str;
@@ -238,16 +294,16 @@ void CMainDlg::OnEnKillfocusEditPassword()
 }
 
 
-void CMainDlg::OnBnClickedCancel()
+void CLoginDlg::OnBnClickedCancel()
 {
 	// 在此添加控件通知处理程序代码
 	m_bAccTextEmpty = false;
 	m_bPwTextEmpty = false;
-	EndDialog(IDCANCEL);
+	EndDialog(IDCANCEL);  // DoModal的返回值可以接收到
 }
 
 
-void CMainDlg::OnBnClickedLogin()
+void CLoginDlg::OnBnClickedLogin()
 {
 	// 在此添加控件通知处理程序代码
 	// 登录的时候还要判断，用户名和密码不能为空
@@ -256,6 +312,10 @@ void CMainDlg::OnBnClickedLogin()
 		m_pEditAccount->GetWindowText(m_EditAccountText);
 	if (m_pEditPassword)
 		m_pEditPassword->GetWindowText(m_EditPasswordText);
+	if (m_pEckAutoLogin)
+		m_bEckAutoLogin = (m_pEckAutoLogin->GetCheck() == BST_CHECKED ? true : false);
+	if (m_pEckRememberPwd)
+		m_bEckRememberPwd = (m_pEckRememberPwd->GetCheck() == BST_CHECKED ? true : false);
 
 	if ((m_EditAccountText == "请输入电话号码" || m_EditAccountText == "")
 		|| (m_EditPasswordText == "请输入密码" || m_EditPasswordText == ""))
@@ -265,10 +325,10 @@ void CMainDlg::OnBnClickedLogin()
 	}
 	m_bAccTextEmpty = false;
 	m_bPwTextEmpty = false;
-	EndDialog(IDOK);
+	EndDialog(IDOK);  // DoModal的返回值可以接收到
 }
 
-CString CMainDlg::GetAccText() const
+CString CLoginDlg::GetAccText() const
 {
 	/*if (m_pEditAccount == NULL)
 		return CString(_T(""));
@@ -277,11 +337,92 @@ CString CMainDlg::GetAccText() const
 	return m_EditAccountText;
 }
 
-CString CMainDlg::GetPwText() const
+CString CLoginDlg::GetPwText() const
 {
 	/*if (m_pEditPassword == NULL)
 		return CString(_T(""));
 	CString text;
 	m_pEditPassword->GetWindowText(text);*/
 	return m_EditPasswordText;
+}
+
+BOOL CLoginDlg::GetRememberPwd() const
+{
+	return m_bEckRememberPwd;
+}
+
+BOOL CLoginDlg::GetAutoLogin() const
+{
+	return m_bEckAutoLogin;
+}
+
+#include "Tools.h"
+
+void CLoginDlg::SetAccText(const char* t)
+{
+
+	m_EditAccountText = CTools::charStr2wcharStr(t);
+	if (m_EditAccountText != _T("")) {
+		m_bAccTextEmpty = true;
+	}
+}
+
+void CLoginDlg::SetPwText(const char* t)
+{
+	m_EditPasswordText = CTools::charStr2wcharStr(t);
+	if (m_EditPasswordText != _T("")) {
+		m_bPwTextEmpty = true;
+	}
+}
+
+void CLoginDlg::SetRememberPwd(bool b)
+{
+	m_bEckRememberPwd = b;
+}
+
+void CLoginDlg::SetAutoLogin(bool b)
+{
+	m_bEckAutoLogin = b;
+}
+
+
+void CLoginDlg::OnBnClickedCekRememberpwd()
+{
+	// 在此添加控件通知处理程序代码
+	if (m_pEckAutoLogin == NULL || m_pEckRememberPwd == NULL)
+		return;
+	// 记住密码为false就要自动取消自动登录的true
+	if (m_pEckRememberPwd->GetCheck() == BST_UNCHECKED) {
+		// 记住密码为false
+		m_pEckAutoLogin->SetCheck(BST_UNCHECKED); // 取消自动登录
+	}
+
+
+	/*if (state == BST_CHECKED) {
+		TRACE("点击了记住密码，当前值为TRUE\r\n");
+	}
+	else if (state == BST_UNCHECKED) {
+		TRACE("点击了记住密码，当前值为FALSE\r\n");
+	}*/
+}
+
+
+void CLoginDlg::OnBnClickedCekAutologin()
+{
+	// 在此添加控件通知处理程序代码
+	if (m_pEckAutoLogin == NULL || m_pEckRememberPwd == NULL)
+		return;
+	// 自动登录为true就要自动勾选记住密码的true
+	int state = m_pEckAutoLogin->GetCheck();
+	if (state == BST_CHECKED) {
+		// 记住密码为true
+		m_pEckRememberPwd->SetCheck(BST_CHECKED); // 勾选记住密码
+	}
+
+	/*if (state == BST_CHECKED) {
+		TRACE("点击了自动登录，当前值为TRUE\r\n");
+	}
+	else if (state == BST_UNCHECKED) {
+		TRACE("点击了自动登录，当前值为FALSE\r\n");
+	}*/
 }

@@ -121,7 +121,7 @@ void DesktopNotificationManagerCompat::Uninstall()
 			// Remove all scheduled notifications (do this first before clearing current notifications)
 			auto notifier = CreateToastNotifier();
 			auto scheduled = notifier.GetScheduledToastNotifications();
-			for (int i = 0; i < scheduled.Size(); i++)
+			for (uint32_t i = 0; i < scheduled.Size(); i++)
 			{
 				try
 				{
@@ -233,7 +233,7 @@ struct callback : implements<callback, INotificationActivationCallback>
 
 			StringMap userInput;
 
-			for (int i = 0; i < dataCount; i++)
+			for (ULONG i = 0; i < dataCount; i++)
 			{
 				userInput.Insert(data[i].Key, data[i].Value);
 			}

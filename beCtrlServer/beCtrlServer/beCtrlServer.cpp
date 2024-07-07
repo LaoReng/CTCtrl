@@ -10,30 +10,26 @@
 #pragma comment(linker,"/subsystem:windows /entry:mainCRTStartup")    //子系统:窗口 入口点:mainCRTStartup
 
 #ifdef _DEBUG
-// #define new DEBUG_NEW
-#pragma comment(lib, "opencv_world490d.lib")
+#pragma comment(lib, "libboost_random-vc142-mt-gd-x64-1_83.lib")
 #else
-#pragma comment(lib, "opencv_world490.lib")
-#pragma comment(lib, "opencv_world490.dll")
-#pragma comment(lib, "opencv_videoio_msmf490_64.dll")
-#pragma comment(lib, "opencv_videoio_ffmpeg490_64.dll")
+#pragma comment(lib, "libboost_random-vc142-mt-x64-1_83.lib")
+#endif
+
+#ifdef _DEBUG
+// #define new DEBUG_NEW
+#else
 #endif
 // 唯一的应用程序对象
 
 CWinApp theApp;
-using namespace std;
 
 int Main()
 {
-	CCommand cmd(GetCurrentThreadId(), "81.70.91.154", 9668);
-	if (cmd.initCmd() == false) {
-		// 初始化失败
-		return 0;
-	}
+	CCommand cmd(GetCurrentThreadId(), SERVER_IP, SERVER_PORT);
 	do {
-		int ret = cmd.Start(GetCurrentThreadId());
+		int ret = cmd.Start();
 		if (ret < 0) {
-			TRACE(_T("%s(%d):服务开启失败\n"), __FILE__, __LINE__);
+			TRACE(_T("服务开启失败\n"));
 			break;
 		}
 		MSG msg = {};
@@ -76,7 +72,6 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			// 在此处为应用程序的行为编写代码。
 			Main();
 		}
 	}
@@ -86,6 +81,5 @@ int main(int argc, char* argv[])
 		TRACE(L"错误: GetModuleHandle 失败\n");
 		nRetCode = 1;
 	}
-
 	return nRetCode;
 }

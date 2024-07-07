@@ -77,6 +77,7 @@ public:
 	FieldInfos(size_t reserved) { reserve(reserved); }
 };
 
+// 这个表示一列
 class Record :public std::vector<Buffer>
 {
 public:
@@ -87,15 +88,102 @@ public:
 };
 
 // 结果中的记录信息
-typedef std::vector<Record> Records;
+// typedef std::vector<Record> Records;
+
+class Records :public std::vector<Record>
+{
+public:
+	Records()
+		: fieldInfos()
+	{}
+	Records(const Record& r, const FieldInfos& f) {
+		resize(1);
+		at(0).resize(r.size());
+		for (unsigned int j = 0; j < r.size(); j++) {
+			at(0)[j] = r[j];
+		}
+
+		fieldInfos = f;
+	}
+	// 构造函数
+	Records(const Records& rs) {
+		fieldInfos = rs.fieldInfos;
+		resize(rs.size());
+		for (unsigned long long i = 0; i < size(); i++) {
+			at(i).resize(rs[i].size());
+			for (unsigned int j = 0; j < rs[i].size(); j++) {
+				at(i)[j] = rs[i][j];
+			}
+		}
+	}
+	// 等于号重载
+	Records& operator=(const Records& rs) {
+		if (this != &rs) {
+			fieldInfos = rs.fieldInfos;
+			resize(rs.size());
+			for (unsigned long long i = 0; i < size(); i++) {
+				at(i).resize(rs[i].size());
+				for (unsigned int j = 0; j < rs[i].size(); j++) {
+					at(i)[j] = rs[i][j];
+				}
+			}
+		}
+		return *this;
+	}
+	// 获取字段信息
+	FieldInfos& getFieldInfos() {
+		return fieldInfos;
+	}
+	// 清空存储的数据
+	void Clear() {
+		fieldInfos.clear();
+		for (size_t i = 0; i < size(); i++) {
+			at(i).clear();
+			// records[i].clear();
+		}
+		clear();
+	}
+
+	/// 由于我们这里是继承关系，在子类中写了与父类同名的函数，父类中的函数就会被覆盖掉，需要显示定义一下
+	reference
+		operator[](size_type __n) _GLIBCXX_NOEXCEPT
+	{
+		__glibcxx_requires_subscript(__n);
+		return *(this->_M_impl._M_start + __n);
+	}
+
+	const_reference
+		operator[](size_type __n) const _GLIBCXX_NOEXCEPT
+	{
+		__glibcxx_requires_subscript(__n);
+		return *(this->_M_impl._M_start + __n);
+	}
+
+	const Buffer operator[](const std::string& index) const {
+		if (size() != 1 || fieldInfos.size() <= 0) {
+			return std::string();
+		}
+		int rindex = -1;
+		for (size_t i = 0; i < fieldInfos.size(); i++) {
+			if (fieldInfos[i].field_name == index) {
+				rindex = (int)i;
+				break;
+			}
+		}
+		if (rindex == -1)return std::string();
+		return at(0)[rindex];
+	}
+
+private:
+	mutable FieldInfos fieldInfos; // 字段信息
+};
 
 // 结果记录
 class ResultRecord
 {
 public:
 	ResultRecord()
-		: fieldInfos()
-		, records()
+		: records()
 	{}
 	// 从结果集中加载数据
 	bool LoadResult(MYSQL_RES* result) {
@@ -105,10 +193,11 @@ public:
 		if (column <= 0)return false;
 		// 获取字段信息
 		MYSQL_FIELD* pField = mysql_fetch_fields(result);
-		fieldInfos.resize(column);
+		FieldInfos& fi = records.getFieldInfos();
+		fi.resize(column);
 		for (unsigned int i = 0; i < column; i++) {
-			fieldInfos[i].field_name = pField[i].name;
-			fieldInfos[i].field_type = (int)pField[i].type;
+			fi[i].field_name = pField[i].name;
+			fi[i].field_type = (int)pField[i].type;
 		}
 		// 获取记录
 		unsigned long long row = mysql_num_rows(result);
@@ -124,18 +213,20 @@ public:
 			}
 			records[i].resize(column);
 			for (unsigned int j = 0; j < column; j++) {
-				records[i][j] = mRow[j];
+				if (fi[j].field_type == MYSQL_TYPE_BIT) {// 这个表示bit类型的变量 对特殊类型进行特殊处理
+					
+					records[i][j] = ((*mRow[j]) & 0x01) == 0 ? "0" : "1";
+				}
+				else {
+					records[i][j] = mRow[j];
+				}
 			}
 		}
 		return true;
 	}
 	// 清空存储的数据
 	void Clear() {
-		fieldInfos.clear();
-		for (size_t i = 0; i < records.size(); i++) {
-			records[i].clear();
-		}
-		records.clear();
+		records.Clear();
 	}
 	~ResultRecord() {
 		Clear();
@@ -143,7 +234,7 @@ public:
 public: // 常量方法
 	// 获取字段信息
 	const FieldInfos& GetFieldInfos() const {
-		return fieldInfos;
+		return records.getFieldInfos();
 	}
 	// 获取记录信息
 	const Records& GetRecords() const {
@@ -153,8 +244,14 @@ public: // 常量方法
 	size_t GetRecordsSize() const {
 		return records.size();
 	}
+	const Records operator[](size_t index) const {
+		if (index >= records.size()) {
+			return Records();
+		}
+		return Records(records.at(index), records.getFieldInfos());
+		// return records.at(index);
+	}
 private:
-	mutable FieldInfos fieldInfos; // 字段信息
 	mutable Records records; // 记录信息
 };
 

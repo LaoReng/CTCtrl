@@ -3,6 +3,14 @@
 #include <string.h>
 
 
+typedef enum {
+	CTC_STARTEQUIPCTRL = 1,  // 开启设备监控
+	CTC_ENDEQUIPCTRL,        // 停止设备监控
+	CTC_CTRLEVENT,           // 鼠标键盘操作事件
+	CTC_EQUIPSHUTDOWN,       // 设备关机操作
+	CTC_EQUIPRESTART         // 设备重启操作
+}CTCTRLCMD;
+
 // 图片数据包
 class CPacket
 {

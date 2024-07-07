@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <RemoteTarget>63150205;81.70.91.154 (username=, port=22, authentication=Password)</RemoteTarget>
+<<<<<<< HEAD
+    <RemoteTarget>63150205;118.190.96.96 (username=, port=22, authentication=Password)</RemoteTarget>
+=======
+    <RemoteTarget>1005323400;192.168.106.129 (username=, port=22, authentication=Password)</RemoteTarget>
+>>>>>>> 27361b21219c38947585705eb88f62977ef39f01
   </PropertyGroup>
 </Project>

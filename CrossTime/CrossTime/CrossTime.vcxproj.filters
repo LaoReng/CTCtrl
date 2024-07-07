@@ -70,6 +70,30 @@
     <ClCompile Include="logger\TimeZone.cc">
       <Filter>logger</Filter>
     </ClCompile>
+    <ClCompile Include="CTCtrlFunction.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="CTCtrlThread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="CTCtrlThreadPool.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="CTCtrlEpoll.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="FilesServer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Process.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="WebSocket.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jsoncpp\allocator.h">
@@ -182,6 +206,30 @@
     </ClInclude>
     <ClInclude Include="logger\Types.h">
       <Filter>logger</Filter>
+    </ClInclude>
+    <ClInclude Include="CTCtrlFunction.h">
+      <Filter>head</Filter>
+    </ClInclude>
+    <ClInclude Include="CTCtrlThread.h">
+      <Filter>head</Filter>
+    </ClInclude>
+    <ClInclude Include="CTCtrlThreadPool.h">
+      <Filter>head</Filter>
+    </ClInclude>
+    <ClInclude Include="CTCtrlEpoll.h">
+      <Filter>head</Filter>
+    </ClInclude>
+    <ClInclude Include="FilesServer.h">
+      <Filter>head</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools.h">
+      <Filter>head</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>head</Filter>
+    </ClInclude>
+    <ClInclude Include="WebSocket.h">
+      <Filter>head</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,1 @@
+import{a as t}from"./vendor-Dj-i8j__.js";import{G as s}from"./index-qxZPit0M.js";const o={baseURL:"http://118.190.96.96:9090/api",timeout:5e3},r=t.create(o);r.interceptors.request.use(e=>(e.headers.Authorization=s(),e));r.interceptors.response.use(e=>e.data);export{r};

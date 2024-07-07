@@ -1,0 +1,1 @@
+import{d as o}from"./vendor-Dj-i8j__.js";import{r as t}from"./index-qxZPit0M.js";const r=()=>t.get("getNewNotice"),s=()=>t.get("getAllNotice"),c=o("notice",{state:()=>({}),actions:{async getAllNotice(){const e=await s();return Promise.resolve(e)},async getNewNotice(){const e=await r();return Promise.resolve(e)}}});export{c as n};

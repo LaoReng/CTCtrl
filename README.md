@@ -1,14 +1,14 @@
-# 跨时空控制台
+# 跨时空控制台—基于Web的远程设备监控系统
 
 ## 介绍
 
-跨时空控制台是一款创新性的远程控制项目，旨在实现用户对远程电脑的全方位操控。无论身处何地，用户均可通过Web端实现对目标设备的遥控，包括鼠标、键盘等一系列操作，仿佛置身于目标电脑旁。该项目不仅提供了便利的远程管理功能，还具备了安全可靠的特性，确保用户数据和操作的隐私和安全性。跨时空控制台的目标是让用户在任何情况下都能轻松地访问和操控远程设备，为工作和生活带来更大的便利和灵活性。
+​	跨时空控制台是一款创新性的远程控制项目，旨在实现用户对远程电脑的全方位操控。无论身处何地，用户均可通过Web端实现对目标设备的遥控，包括鼠标、键盘等一系列操作，仿佛置身于目标电脑旁。该项目不仅提供了便利的远程管理功能，还具备了安全可靠的特性，确保用户数据和操作的隐私和安全性。跨时空控制台的目标是让用户在任何情况下都能轻松地访问和操控远程设备，为工作和生活带来更大的便利和灵活性 
 
 ### 软件架构
 
-该项目开发采用传统B/S架构与C/S架构联合开发
+​	该项目开发采用传统B/S架构与C/S架构联合开发
 
-即控制端为web网页、被控端为Windows客户端应用程序
+​	即控制端为web网页、被控端为Windows客户端应用程序
 
 ### 部署教程
 
@@ -18,15 +18,33 @@
 
 ​	还需要准备一台Linux操作系统的机器，并使用VS2019与之建立SSH连接
 
+​	SSH连接配置参考：https://blog.csdn.net/weixin_64647426/article/details/131341970、https://blog.csdn.net/weixin_64647426/article/details/129319160
+
 Linux系统配置：
 
-​	Linux操作系统需要安装gcc、g++、gdb、cmake、make、rsync、zip、boost以及MySQL开发环境
+​	Linux操作系统需要安装gcc、g++、gdb、git、cmake、make、rsync、zip、boost、curl、websocketpp以及MySQL开发环境
 
 ​	安装命令（以Ubuntu22.04为例）：
 
-​		`sudo apt install gcc g++ gdb make rsync zip libboost-dev`
+​		`sudo apt install gcc g++ gdb git cmake make rsync zip libboost-dev curl libcurl4-openssl-dev`
 
 ​		`sudo apt install mysql-server mysql-client libmysqlclient-dev`
+
+​		MySQL远程连接配置参考：https://blog.csdn.net/weixin_64647426/article/details/134105615
+
+​	websocketpp安装命令（以Ubuntu22.04为例）：
+
+​		克隆websocketpp仓库代码：`git clone https://github.com/zaphoyd/websocketpp.git`
+
+​		进入websocketpp仓库：`cd websocketpp`
+
+​		创建并进入build目录：`mkdir build && cd build`
+
+​		配置项目：`cmake ..`
+
+​		编译项目：`make`
+
+​		安装到系统路径：`sudo make install`
 
 部署教程：
 
@@ -54,7 +72,7 @@ Linux系统配置：
 
 ### 使用说明
 
-+ 首先访问我们[网站](http://81.70.91.154/)，进行账号的注册。
++ 首先访问我们[网站](http://www.ctctrl.nat300.top)，进行账号的注册。
 
 + 注册并登录网站，即现在就可以对存在的设备进行控制了
 
@@ -68,9 +86,11 @@ Linux系统配置：
 + [LiShiWei](https://gitee.com/shenzhen-hong-kong-rolling)              
 + [WangMeiQi](https://gitee.com/wang-mei-qi)        
 
-## 数据库表设计
+## 详细设计
 
-<img src="README.assets/image-20240405150507432.png" alt="image-20240405150507432" style="zoom:80%;" />
+### 数据库表设计
+
+<img src="README.assets/image-20240511192403351.png" alt="image-20240511192403351" style="zoom:80%;" />
 
 用户表（用户id，用户名，头像，密码，性别，地址，电话，注册时间，余额）
 
@@ -78,7 +98,9 @@ Linux系统配置：
 
 VIP表（用户id，VIP状态，VIP等级，累计充值金额，到期时间，用户可控设备时间，可控次数，剩余次数）
 
-设备表（设备id，设备名，密钥，申请时间，申请状态）
+登录记录表（用户id，ip地址，经度，纬度，登录设备类型，登录时间）
+
+设备表（设备id，设备名，密钥，申请时间，申请状态，经度，纬度）
 
 管理员表（管理员id，管理员名，电话，密码，注册时间）
 
@@ -92,7 +114,7 @@ VIP表（用户id，VIP状态，VIP等级，累计充值金额，到期时间，
 
 用户控制设备表[历史记录]（控制者id，被控设备id，开始控制时间）
 
-### 对数据表去除冗余表，并对数据表进行优化
+#### 对数据表去除冗余表，并对数据表进行优化
 
 由于用户表字段数据太过庞大，所以将用户字段进行拆分为三张表：用户表、忘记密码表以及VIP表
 
@@ -108,7 +130,9 @@ VIP表（用户id，VIP状态，VIP等级，累计充值金额，到期时间，
 
 VIP表（<span style="text-decoration: underline; text-decoration-style: wavy;"><u>用户id</u></span>，VIP状态，VIP等级，累计充值金额，到期时间，用户可控设备时间，可控次数，剩余次数）
 
-设备表（<u>设备id</u>，设备名，<span style="text-decoration: underline; text-decoration-style: wavy;">所属用户id</span>，密钥，申请时间，申请状态）
+登录记录表（<span style="text-decoration: underline; text-decoration-style: wavy;">记录id</span>，<u>用户id</u>，ip地址，经度，纬度，登录设备类型，登录时间）
+
+设备表（<u>设备id</u>，设备名，<span style="text-decoration: underline; text-decoration-style: wavy;">所属用户id</span>，密钥，申请时间，申请状态，经度，纬度）
 
 管理员表（<u>管理员id</u>，管理员名，电话，密码，注册时间）
 
@@ -118,7 +142,7 @@ VIP表（<span style="text-decoration: underline; text-decoration-style: wavy;">
 
 用户控制设备表[控制设备历史记录]（<u>控制id</u>，<span style="text-decoration: underline; text-decoration-style: wavy;">控制者id，被控设备id</span>，开始控制时间）
 
-### 数据表关系约束
+#### 数据表关系约束
 
 用户表
 
@@ -157,6 +181,18 @@ VIP表
 | 可控次数         | INT      | not null                                                     |
 | 剩余次数         | INT      | not null                                                     |
 
+登录记录表
+
+| 属性         | 类型      | 约束                                              |
+| ------------ | --------- | ------------------------------------------------- |
+| 记录id       | INT       | primary key, AUTO_INCREMENT                       |
+| 用户id       | INT       | foreign key, ON DELETE CASCADE, ON UPDATE CASCADE |
+| ip地址       | VCHAR(40) | not null                                          |
+| 经度         | DOUBLE    | not null                                          |
+| 纬度         | DOUBLE    | not null                                          |
+| 登录设备类型 | VCHAR(40) | not null                                          |
+| 登录时间     | DATETIME  | not null                                          |
+
 设备表
 
 | 属性       | 类型      | 约束                                              |
@@ -167,6 +203,8 @@ VIP表
 | 密钥       | VCHAR(40) | not null                                          |
 | 申请时间   | DATETIME  | not null                                          |
 | 申请状态   | BIT       | not null                                          |
+| 经度       | DOUBLE    | not null                                          |
+| 纬度       | DOUBLE    | not null                                          |
 
 管理员
 
@@ -204,15 +242,15 @@ VIP表
 | 设备id       | INT      | foreign key, ON DELETE CASCADE, ON UPDATE CASCADE |
 | 开始控制时间 | DATETIME | not null                                          |
 
-### SQL实现
+#### SQL实现
 
-#### 创建数据库
+##### 创建数据库
 
 ~~~sql
 CREATE DATABASE IF NOT EXISTS CrossTime;
 ~~~
 
-#### 创建数据表
+##### 创建数据表
 
 用户表：
 
@@ -262,20 +300,40 @@ CREATE TABLE `vip` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ~~~
 
+登录记录表：
+
+~~~sql
+CREATE TABLE `ulogin_history` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '记录id',
+  `Uid` int NOT NULL COMMENT '用户id',
+  `ipAddr` varchar(40) NOT NULL COMMENT 'ip地址',
+  `longitude` double NOT NULL COMMENT '经度',
+  `latitude` double NOT NULL COMMENT '纬度',
+  `address` varchar(255) NOT NULL COMMENT '登录地点',
+  `dtype` varchar(40) NOT NULL COMMENT '登录设备类型',
+  `loginTime` datetime NOT NULL COMMENT '登录时间',
+  PRIMARY KEY (`id`),
+  KEY `userid` (`Uid`),
+  CONSTRAINT `userid` FOREIGN KEY (`Uid`) REFERENCES `ctuser` (`Uid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+~~~
+
 设备表：
 
 ~~~sql
 CREATE TABLE `equipment` (
   `Eid` int NOT NULL AUTO_INCREMENT COMMENT '设备id',
-  `Ename` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '设备名',
+  `Ename` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '设备名',
   `Uid` int NOT NULL COMMENT '所属用户id',
-  `secret_key` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '控制密钥',
+  `secret_key` varchar(40) NOT NULL COMMENT '控制密钥',
   `app_time` datetime NOT NULL COMMENT '申请时间',
   `app_status` bit(1) NOT NULL COMMENT '申请状态',
+  `longitude` double NOT NULL COMMENT '经度',
+  `latitude` double NOT NULL COMMENT '纬度',
   PRIMARY KEY (`Eid`),
   KEY `belone_id` (`Uid`),
   CONSTRAINT `belone_id` FOREIGN KEY (`Uid`) REFERENCES `ctuser` (`Uid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 ~~~
 
 管理员表：
@@ -336,9 +394,9 @@ CREATE TABLE IF NOT EXISTS `ctrl_history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ~~~
 
-## 数据包格式封装（包括HTTP请求包&应答包）
+### 控制端前台←→服务器通信协议封装（包括HTTP请求包&应答包）
 
-### 注册数据包
+#### 注册数据包
 
 请求：
 
@@ -358,7 +416,8 @@ Accept: application/json
 	"answer1" : "...",         // 答案1
 	"question2" : "...",       // 问题2
 	"answer2" : "...",         // 答案2
-	"registerTime" : "..."     // 注册时间 2024-4-6 12:03:59
+	"registerTime" : "...",     // 注册时间 2024-4-6 12:03:59
+	"avatar":"",				//头像
 }
 ~~~
 
@@ -387,12 +446,22 @@ Referrer-Policy: same-origin
 }
 ~~~
 
-### 登录数据包
+#### 登录数据包
 
 请求：
 
 ~~~http
-http://192.168.10.132:9668/login?phone=...&password=...
+POST /login HTTP/1.1
+Host: 192.168.10.132:9668
+Content-Type: application/json
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36
+Accept: application/json
+
+{
+	"phone" : "...",           // 手机号
+	"password" : "...",        // 密码
+	"ip" : "..."               // 登录设备ip
+}
 ~~~
 
 应答：
@@ -420,7 +489,7 @@ Referrer-Policy: same-origin
 }
 ~~~
 
-### 忘记密码数据包
+#### 忘记密码数据包
 
 请求：
 
@@ -464,7 +533,32 @@ Referrer-Policy: same-origin
 }
 ~~~
 
-### 验证答案数据包
+#### 获取头像列表
+
+请求
+
+>  GET `/getAvatarList`
+
+响应体
+
+~~~json
+{
+	"message" : "...",
+	"status" : 1,
+	"imgList":[
+		{
+			id:"1",
+			url:"/xx.jpg"
+		},
+		{
+			id:"2",
+			url:"/xx.jpg"
+		}
+	]
+}
+~~~
+
+#### 验证答案数据包
 
 请求：
 
@@ -509,7 +603,7 @@ Referrer-Policy: same-origin
 }
 ~~~
 
-### 获取个人信息
+#### 获取个人信息
 
 请求：
 
@@ -537,20 +631,24 @@ X-Content-Type-Options: nosniff
 Referrer-Policy: same-origin
 
 {
-	"message" : "...", // 答案是否正确的信息
-	"status" : 1, // 状态 1表示信息获取成功
-	"avatar" : "...", // 头像
-	"name" : "...", // 用户名
-	"password" : "...", // 密码
-	"sex" : "...", // 性别 1表示男 0表示女
-	"addr" : "...", // 住址
-	"phone" : "...", // 手机号
-	"registerTime" : "...", // 注册时间
-	"balance" : "..." // 余额
+	"message"        : "...",                // 答案是否正确的信息
+	"status"         : 1,                    // 状态 1表示信息获取成功
+	"avatar"         : "...",                // 头像
+	"name"           : "...",                // 用户名
+	"password"       : "...",                // 密码
+	"sex"            : "...",                // 性别 1表示男 0表示女
+	"addr"           : "...",                // 住址
+	"phone"          : "...",                // 手机号
+	"registerTime"   : "...",                // 注册时间
+	"balance"        : "..."                 // 余额
+	"equipCtrlCount" : "",	                 // 设备可控次数
+	"expireTime"     : "xxxx-xx-xx xx:xxxx", // 会员到期时间
+	"vipgrade"       : "",	                 // vip等级 数据应是1 || 2 ||3 .... ||8
+	"accBalance"     : ""	                 // 累计充值金额
 }
 ~~~
 
-### 修改个人信息
+#### 修改个人信息
 
 请求：
 
@@ -592,7 +690,7 @@ Referrer-Policy: same-origin
 }
 ~~~
 
-### 获取最新公告数据包
+#### 获取最新公告数据包
 
 请求：
 
@@ -626,7 +724,7 @@ Referrer-Policy: same-origin
 }
 ~~~
 
-### 获取所有公告数据包
+#### 获取所有公告数据包
 
 请求：
 
@@ -669,53 +767,7 @@ Referrer-Policy: same-origin
 }
 ~~~
 
-### 被控端上线数据包
-
-请求：
-
-~~~http
-GET /bectrlOnline HTTP/1.1
-Host: 192.168.1.6:9668
-Content-Type: application/json
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36
-Content-Length: [len]
-Accept: application/json
-
-{
-	"equipName" : "...",
-	"width" : "...",
-	"height" : "...",
-	"phone" : "...",
-	"password" : "..."
-}
-~~~
-
-应答：
-
-~~~http
-HTTP/1.1 200 OK
-Date: Wed, 03 Apr 2024 10:47:04 GMT
-Server: CrossTimeServer/1.0
-Content-Type: text/html; charset=utf-8
-X-Frame-Options: DENY
-Access-Control-Allow-Origin: * // 跨域所用
-Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS, DELETE
-Access-Control-Max-Age: 3600
-Access-Control-Allow-Headers: *
-Connection: keep-alive  // 保持长连接所用
-Keep-Alive: timeout=100s
-Cache-Control: no-cache // 设置浏览器无缓冲所用
-Content-Length: [len]
-X-Content-Type-Options: nosniff
-Referrer-Policy: same-origin
-
-{
-	"message" : "...",
-	"status" : 0
-}
-~~~
-
-### 获取设备列表数据包
+#### 获取设备列表数据包
 
 请求：
 
@@ -744,15 +796,17 @@ Referrer-Policy: same-origin
 
 {
 	"totalNumber" : ... ,  // 总设备数
-	"equipments" : [
+	"equipments"  : [      // 在线设备列表
 		{
-
-			"name": "...",  // 设备名称
-			"ip" : "...",   // 设备ip地址
-			"eStatus" : ... // 设备状态1 在线 2繁忙
+			"id"      : "...", // 设备id
+			"name"    : "...", // 设备名称
+			"ip"      : "...", // 设备ip地址
+			"type"    : "1/2", // 设备类型 1表示Windows系统  2表示嵌入式设备
+			"eStatus" : ...    // 设备状态1 在线 2繁忙
 		},
 		{
-			"name" : ...,
+			"id"      : "...", // 设备id
+			"name"    : "...", // 设备名称
 			...
 		},
 		...
@@ -760,7 +814,7 @@ Referrer-Policy: same-origin
 }
 ~~~
 
-### 发起设备控制数据包
+#### 发起设备控制数据包
 
 请求：
 
@@ -772,10 +826,10 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 Accept: application/json
 
 {
-	"ctrlerPhone" : "...",     // 控制者的手机号
+	"ctrlerPhone"     : "...", // 控制者的手机号
 	"bectrlEquipName" : "...", // 被控设备名称
-	"startCtrlTime" : "..."    // 开始控制的时间戳
-	
+	"startCtrlTime"   : "...", // 开始控制的时间戳
+	"key"             : "..."  //开启设备的秘钥 例如：sahkdas123190
 }
 ~~~
 
@@ -799,14 +853,14 @@ X-Content-Type-Options: nosniff
 Referrer-Policy: same-origin
 
 {
-	"imageDir" : "...", // 获取图片的位置
-	"eStatus" : "...",  // 设备当前的状态
-	"CtrlTime" : "..."  // 用户可控设备时间 10表示10分钟
+	"imageDir" : "...",  // 获取图片的位置
+	"eStatus"  : "...",  // 设备当前的状态
+	"CtrlTime" : "..."   // 用户可控设备时间 10表示10分钟
 	
 }
 ~~~
 
-### 停止设备控制数据包
+#### 停止设备控制数据包
 
 请求：
 
@@ -847,7 +901,40 @@ Referrer-Policy: same-origin
 }
 ~~~
 
-### 鼠标键盘事件数据包
+#### 设备操作数据包（关机/重启/删除）
+
+请求：
+
+~~~http
+POST /controlEquip HTTP/1.1
+Host: 192.168.10.132:9668
+Content-Type: application/json
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36
+Accept: application/json
+
+{
+	ctrlerPhone : "",        // 发起控制的手机号
+	type        : "1||2||3", // 操作类型 1代表关机，2代表重启，3代表删除设备
+	list        : [          // 命令列表
+	{	
+        "bectrlEquipName" : "...", // 设备名称
+        "timeout"         : "..."  // 时间
+    },
+    ...
+   ]
+}
+~~~
+
+应答：
+
+~~~json
+{
+	"message" : "...",  // 信息
+	"status"  : 1       // 状态值 1表示成功
+}
+~~~
+
+#### 鼠标键盘事件数据包
 
 请求：
 
@@ -885,7 +972,6 @@ Cache-Control: no-cache // 设置浏览器无缓冲所用
 Content-Length: [len]
 X-Content-Type-Options: nosniff
 Referrer-Policy: same-origin
-
 ~~~
 
 键盘事件映射表：
@@ -1004,73 +1090,442 @@ Referrer-Policy: same-origin
 |            左ALT            |    0XA4    |   164    |
 |            右ALT            |    0XA5    |   165    |
 
-### 获取指定目录下的文件和文件夹
+#### 指定设备文件预览操作数据包
 
 请求：
 
-~~~http
-GET /getFileInfo HTTP/1.1
-Host: 192.168.10.132:9668
-Content-Type: application/json
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36
-Accept: application/json
-
+~~~json
 {
-	"GetDir" : "..."    // 要获取的指定目录
+    "auth"   : "...",             // 手机号
+    "opType" : "0/1/2/3/4/5/6/7", // 操作类型 上线/文件浏览/删除/新建/运行/重命名/上传/下载
+    "EName"  : "...",             // 设备名
+    "dir"    : "..."              // 目录绝对路径
 }
 ~~~
 
 应答：
 
-~~~http
-HTTP/1.1 200 OK
-Date: Wed, 03 Apr 2024 10:47:04 GMT
-Server: CrossTimeServer/1.0
-Content-Type: text/html; charset=utf-8
-X-Frame-Options: DENY
-Access-Control-Allow-Origin: * // 跨域所用
-Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS, DELETE
-Access-Control-Max-Age: 3600
-Access-Control-Allow-Headers: *
-Connection: keep-alive  // 保持长连接所用
-Keep-Alive: timeout=100s
-Cache-Control: no-cache // 设置浏览器无缓冲所用
-Content-Length: [len]
-X-Content-Type-Options: nosniff
-Referrer-Policy: same-origin
-
+~~~json
 {
-	"message" : "..." ,
-	"status" : 1 ,
-	"totalNumber" : ... ,
-	"equipment" : [
+    "equip" : "...",  // 表示这个是设备的数据
+    "toCtrl" : "...", // 要将数据发送给的控制端
+    "list":[
+    {
+        "type":"1/2",  // 文件/文件夹
+        "label":"..."  // 文件名
+    },
+    ...
+    ]
+}
+~~~
+
+举个🌰：
+
+ <img src="README.assets/image-20240622115143481.png" alt="image-20240622115143481" style="zoom:80%;" />
+
+#### 指定设备文件删除、运行、重命名、新建操作数据包
+
+请求：
+
+~~~json
+{
+    "auth"   : "...",           // 手机号
+    "opType" : "0/1/2/3/4/5/6/7", // 操作类型 上线/文件浏览/删除/新建/运行/重命名/上传/下载
+    "EName"  : "...",           // 设备名
+    "dir"    : "..."            // 目录绝对路径
+}
+~~~
+
+应答：
+
+~~~json
+{
+    "toCtrl" : "...", // 要将数据发送给的控制端
+    "message" : "...",  // 是否成功失败
+    "status"  : "1"     // 状态值
+}
+~~~
+
+#### 发起文件下载操作数据包
+
+请求：
+
+~~~json
+{
+    "auth"   : "...",           // 手机号
+    "opType" : "0/1/2/3/4/5/6/7", // 操作类型 上线/文件浏览/删除/新建/运行/重命名/上传/下载
+    "EName"  : "...",           // 设备名
+    "dir"    : "..."            // 文件绝对路径
+}
+~~~
+
+应答：
+
+~~~json
+{
+    "toCtrl"    : "...",   // 要将数据发送给的控制端
+	"bNext"     : "0/1",   // 是否有后续  0表示没有/1表示有
+    "totalSize" : ...,     // 文件总大小
+    "Size"      : ...,     // 本次分片大小
+    "data"      : "..."    // 文件数据二进制形势
+}
+~~~
+
+举个🌰：
+
+~~~c++
+// 上线包
+{
+    "auth"   : "15046543174",
+    "opType" : "0"
+}
+// 下载指定路径下文件
+{
+    "auth"   : "15046543174",
+    "opType" : "7",
+    "EName"  : "sb1",
+    "dir"    : "E:\\hacker.ico"
+}
+~~~
+
+#### 发起文件上传操作数据包
+
+请求：
+
+~~~json
+{
+    "auth"   : "...",           // 手机号
+    "opType" : "0/1/2/3/4/5/6/7", // 操作类型 上线/文件浏览/删除/新建/运行/重命名/上传/下载
+	"EName"  : "...",           // 设备名
+    "bNext"  : "0/1",           // 是否有后续  0表示没有/1表示有
+    "dir"    : "...",           // 文件绝对路径
+    "data"   : "..."            // 文件数据二进制格式
+}
+~~~
+
+应答：
+
+~~~json
+{
+    "toCtrl" : "...", // 要将数据发送给的控制端
+    "message" : "...",
+    "status"  : "1"
+}
+~~~
+
+#### 数据大屏—访问量及当前用户登录信息数据包
+
+请求：
+
+> `GET /dataSummary`
+
+应答：
+
+~~~json
+{
+	"message"         : "...",     // 成功success || error
+	"status"          : 1,         // 状态值 1表示成功
+	"visitTotal"      : xxx,       // 总访问量
+	"weekPerDayToatl" : [...,...], // 周访问量（每天）
+	"registerCount"   : xxx,       // 注册人数
+	"historyList"     : [          // 历史登录记录（当前用户的）
 		{
-			"fileName": ...,    // 文件名
-			"operation" : ...,  // 文件类型（文件夹 / 文件）
-			...
+			ip      : "",                   // 登录ip
+			date    : "xxx-xx-xx xx:xx:xx", // 历史登录时间
+			address : "黑龙江省哈尔滨市"       // 登录地址 省市
 		},
-		{
-			"fileName" : ...,
-			...
-		},
-		...
+        ...
 	]
 }
 ~~~
 
-### 发起文件下载操作数据包
+#### 数据大屏—当前在线人数统计数据包
+
+请求：
+
+> `GET /currentOnline`
+
+应答：
+
+~~~json
+{
+	"message" : "...", // 成功success || error
+	"status"  : 1,     // 状态值 1表示成功
+	"online"  : xxx    //当前在线数
+}
+~~~
+
+#### 数据大屏—获取所有注册设备数据包
+
+请求：
+
+> `GET /getEquipAll`
+
+应答：
+
+~~~json
+{
+    "list":[
+       {
+           "eName"   : "...",     // 设备名
+           "llitude" : [...,...], // 经纬度
+           "status"  : 0|1|2      // 状态 0表示离线 1表示在线 2表示正在被控制
+       },
+       ...
+    ]
+}
+~~~
+
+#### 数据大屏—正被控设备状态指向数据包
+
+请求：
+
+> `GET /ctrlTobeCtrl`
+
+响应：
+
+~~~json
+{
+    "list":[
+         {	
+             "coords":[
+             	[126.642464, 45.756967], 
+             	[119.306239, 26.075302]
+             ]	//控制端起点经纬度，被控端终点经纬度
+         },
+         {
+             "coords":[
+                 [126.642464, 45.756967], 
+                 [119.306239, 26.075302]
+             ]	//控制端起点经纬度，被控端终点经纬度
+         }
+         ...
+    ]
+}
+~~~
+
+#### 数据大屏—获取当前位置的天气数据包
+
+请求：
+
+> `GET /getWeather?ip=...`
+
+受支持API接口：http://api.lolimi.cn/API/weather/?city=北京
+
+受支持API接口：http://api.map.baidu.com/location/ip?ip=111.206.214.37&coor=bd09ll&ak=您的AK
+
+应答：
+
+~~~json
+{
+  "code": 1,
+  "text": "获取成功",
+  "data": {
+    "city": "大庆",
+    "cityEnglish": "daqing",
+    "temp": "13",
+    "tempn": "14",
+    "weather": "晴转多云",
+    "wind": "西北风转西风",
+    "windSpeed": "3-4级转\u003C3级",
+    "time": "2024-05-18 08:00",
+    "warning": {
+
+    },
+    "current": {
+      "city": "大庆",
+      "cityEnglish": "daqing",
+      "humidity": "24%",
+      "wind": "西北风",
+      "windSpeed": "2级",
+      "visibility": "30km",
+      "weather": "多云",
+      "weatherEnglish": "Cloudy",
+      "temp": "17",
+      "fahrenheit": "62.6",
+      "air": "30",
+      "air_pm25": "30",
+      "date": "05月18日(星期六)",
+      "time": "17:05",
+      "image": "http://api.lolimi.cn/API/weather/cache/image/多云.png"
+    },
+    "living": [
+      {
+        "name": "路况指数",
+        "index": "干燥",
+        "tips": "天气较好，路面较干燥，路况较好。"
+      },
+      {
+        "name": "晨练指数",
+        "index": "较适宜",
+        "tips": "部分地面较湿滑，选择合适的地点晨练。"
+      },
+      {
+        "name": "空气污染扩散条件指数",
+        "index": "良",
+        "tips": "气象条件有利于空气污染物扩散。"
+      },
+      {
+        "name": "逛街指数",
+        "index": "较适宜",
+        "tips": "这种好天气去逛街可使身心畅快放松。"
+      },
+      {
+        "name": "舒适度指数",
+        "index": "较舒适",
+        "tips": "白天晴好，早晚偏凉，午后舒适。"
+      },
+      {
+        "name": "啤酒指数",
+        "index": "较适宜",
+        "tips": "适量的饮用啤酒，注意不要过量。"
+      },
+      {
+        "name": "划船指数",
+        "index": "较适宜",
+        "tips": "风稍大会对划船产生一定影响。"
+      },
+      {
+        "name": "太阳镜指数",
+        "index": "必要",
+        "tips": "建议佩戴透射比为1级的遮阳镜"
+      },
+      {
+        "name": "紫外线强度指数",
+        "index": "很强",
+        "tips": "涂擦SPF20以上，PA++护肤品，避强光。"
+      },
+      {
+        "name": "风寒指数",
+        "index": "无",
+        "tips": "温度未达到风寒所需的低温，稍作防寒准备即可。"
+      },
+      {
+        "name": "穿衣指数",
+        "index": "较冷",
+        "tips": "建议着厚外套加毛衣等服装。"
+      },
+      {
+        "name": "放风筝指数",
+        "index": "适宜",
+        "tips": "好天气，放风筝可以舒展筋骨放松身心。"
+      },
+      {
+        "name": "空调开启指数",
+        "index": "较少开启",
+        "tips": "体感舒适，不需要开启空调。"
+      },
+      {
+        "name": "钓鱼指数",
+        "index": "较适宜",
+        "tips": "风稍大会对垂钓产生一定影响。"
+      },
+      {
+        "name": "晾晒指数",
+        "index": "适宜",
+        "tips": "天气不错，抓紧时机让衣物晒太阳吧。"
+      },
+      {
+        "name": "感冒指数",
+        "index": "极易发",
+        "tips": "强降温，极易感冒。"
+      },
+      {
+        "name": "洗车指数",
+        "index": "较适宜",
+        "tips": "无雨且风力较小，易保持清洁度。"
+      },
+      {
+        "name": "旅游指数",
+        "index": "适宜",
+        "tips": "风稍大，但仍可尽情享受大自然风光。"
+      },
+      {
+        "name": "夜生活指数",
+        "index": "较适宜",
+        "tips": "只要您稍作准备就可以放心外出。"
+      },
+      {
+        "name": "心情指数",
+        "index": "好",
+        "tips": "好天气会带来一天的好心情。"
+      },
+      {
+        "name": "约会指数",
+        "index": "较适宜",
+        "tips": "不用担心天气来调皮捣乱而影响了兴致。"
+      },
+      {
+        "name": "运动指数",
+        "index": "较适宜",
+        "tips": "风力稍强，推荐您进行室内运动。"
+      },
+      {
+        "name": "过敏指数",
+        "index": "较易发",
+        "tips": "需注意远离过敏源，适当采取防护措施。"
+      },
+      {
+        "name": "美发指数",
+        "index": "一般",
+        "tips": "注意清洁，建议选用防晒滋润型护发品。"
+      },
+      {
+        "name": "雨伞指数",
+        "index": "不带伞",
+        "tips": "天气较好，不用带雨伞。"
+      },
+      {
+        "name": "防晒指数",
+        "index": "极强",
+        "tips": "需涂擦SPF大于20，PA++，护肤品。"
+      },
+      {
+        "name": "化妆指数",
+        "index": "防晒",
+        "tips": "请选用中性保湿型化妆品。"
+      },
+      {
+        "name": "中暑指数",
+        "index": "无中暑风险",
+        "tips": "天气不热，在炎炎夏日中十分难得，可以告别暑气漫漫啦~"
+      },
+      {
+        "name": "交通指数",
+        "index": "良好",
+        "tips": "气象条件良好，车辆可以正常行驶。"
+      },
+      {
+        "name": "干燥指数",
+        "index": "干燥",
+        "tips": "风速偏大，空气干燥，皮肤水分流失快，应减少皮肤暴露在外面积；多喝水补充身体水分，同时涂抹保湿滋润型护肤品。"
+      }
+    ]
+  }
+}
+~~~
+
+### 被控端←→服务器通信协议封装（包括HTTP请求包&应答包）
+
+#### 登录数据包
 
 请求：
 
 ~~~http
-POST /downloadFile HTTP/1.1
-Host: 192.168.10.132:9668
+GET /bectrlOnline HTTP/1.1
+Host: 192.168.1.6:9668
 Content-Type: application/json
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36
+Content-Length: [len]
 Accept: application/json
 
 {
-	"FileDir" : "..."   // 要下载的文件的绝对路径
+	"equipName" : "...",
+	"type" : "1/2",    // 设备类型1表示Windows设备  2表示嵌入式
+	"width" : "...",
+	"height" : "...",
+	"phone" : "...",
+	"password" : "..."
 }
 ~~~
 
@@ -1094,54 +1549,136 @@ X-Content-Type-Options: nosniff
 Referrer-Policy: same-origin
 
 {
-	"message" : "...",  // 信息
-	"status" : 1,       // 状态值
-	"FileSize" : ...    // 文件大小
+	"message" : "...",
+	"status"  : 0
 }
 ~~~
 
-### 发起文件上传数据包
+#### 被控端下线
 
 请求：
 
 ~~~http
+GET /bectrlDownline HTTP/1.1
+Host: 192.168.1.6:9668
+Content-Type: application/json
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36
+Content-Length: [len]
+Accept: application/json
 
+{
+	"equipName" : "..."
+}
 ~~~
 
 应答：
 
 ~~~http
+HTTP/1.1 200 OK
+Date: Wed, 03 Apr 2024 10:47:04 GMT
+Server: CrossTimeServer/1.0
+Content-Type: text/html; charset=utf-8
+X-Frame-Options: DENY
+Access-Control-Allow-Origin: * // 跨域所用
+Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS, DELETE
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: *
+Connection: keep-alive  // 保持长连接所用
+Keep-Alive: timeout=100s
+Cache-Control: no-cache // 设置浏览器无缓冲所用
+Content-Length: [len]
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
 
+{
+	"message" : "...",
+	"status"  : 0
+}
 ~~~
 
-## 跨时空控制台后台
+#### 开启屏幕监控数据包
 
-### 管理员注册
+请求：
 
-> `POST  /back/register`
+~~~c++
+// [包头][命令号][数字][长度][数据][校验和]
+[0xFEFF][1][端口号][length][文件名][校验和]
+~~~
 
-请求体
+应答：
 
-```json
-{
-	"phone" : "...",           // 手机号
-	"username" : "...",        // 用户名
-	"password" : "...",        // 密码
-	"balance" : ...,           // 余额
-	"registerTime" : "..."     // 注册时间 2024-4-6 12:03:59
-}
-```
+~~~c++
+// [包头][命令号][数字][长度][数据][校验和]
+[0xFEFF][1][num][length][设备数据][校验和]
+~~~
 
-响应体
+#### 停止屏幕监控数据包
 
-```json
-{
-	"message" : "...", // 信息
-	"status" : 1       // 状态值 1表示成功
-}
-```
+请求：
 
-### 管理员登录
+~~~c++
+// [包头][命令号][数字][长度][数据][校验和]
+[0xFEFF][2][2][length][NULL][校验和]
+~~~
+
+应答：
+
+~~~c++
+// [包头][命令号][数字][长度][数据][校验和]
+暂无返回数据
+~~~
+
+#### 鼠标键盘操作数据包
+
+请求：
+
+~~~c++
+// [包头][命令号][数字][长度][数据][校验和]
+[0xFEFF][3][3][length][MKEvent数据][校验和]
+~~~
+
+应答：
+
+~~~c++
+// [包头][命令号][数字][长度][数据][校验和]
+暂无返回数据
+~~~
+
+#### 设备关机操作数据包
+
+请求：
+
+~~~c++
+// [包头][命令号][数字][长度][数据][校验和]
+[0xFEFF][4][4][length][NULL][校验和]
+~~~
+
+应答：
+
+~~~c++
+// [包头][命令号][数字][长度][数据][校验和]
+暂无返回数据
+~~~
+
+#### 设备重启操作数据包
+
+请求：
+
+~~~c++
+// [包头][命令号][数字][长度][数据][校验和]
+[0xFEFF][5][5][length][NULL][校验和]
+~~~
+
+应答：
+
+~~~c++
+// [包头][命令号][数字][长度][数据][校验和]
+暂无返回数据
+~~~
+
+### CTCtrl后台←→服务器通信协议封装（包括HTTP请求包&应答包）
+
+#### 管理员登录
 
 > `GET /back/login?phone=...&password=...`
 
@@ -1154,7 +1691,7 @@ Referrer-Policy: same-origin
 }
 ```
 
-### 获取用户列表（分页）
+#### 获取用户列表(分页)
 
 > GET /back/getUserList?page=1&pageSize=10    
 >
@@ -1171,44 +1708,82 @@ Referrer-Policy: same-origin
 	"data"：{
 		"list":[
 			{
-				"id":xxx,
-				"avatar":"",//头像
-				"name":xxx,//用户名
-				"password":"xxx",//密码
-				"sex":0|1|2,  //0代表女，1代表男，2代表不愿透露
-				"addr":"黑龙江省,哈尔滨市,道外区",
-				"phone":"188xxx",
-				"balance":"",//余额
-				"registerTime" : "...", // 注册时间
-				//下面可忽略
-				"vipStatus":1|0, //vip的状态，1代表激活，0代表未激活
-				"vipLevel":1|2|3|4|5, //vip的等级  1 2 3 4 5级
-				"totalRecharge":"",//累计充值
-				"expirationDate":"2022-12-22 12:00:00" //vip到期时间
-				"deviceControlTime","" // 设备可控天数
-				"controlCount":xxx,//可控次数
-				"remainingCount":xxx,//剩余次数
+    			//以下没有的值为-
+				"userId"            :"user-xxx",           // 用户id
+				"username"          :"xxx",                // 用户名
+				"sex"               :0|1|2,                // 0代表女，1代表男，2代表不愿透露
+				"address"           :"黑龙江省,哈尔滨市,道外区",// 地址
+				"phone"             :"12345678910",        // 手机号
+				"registerTime"      :"2024-04-05 20:13:14",// 注册时间
+				"vipStatus"         :1|0,                  // vip的状态，1代表激活，0代表未激活
+				"vipLevel"          :1|2|3|4|5,            // vip的等级  1 2 3 4 5级
+ 			    "expirationDate"    :"2022-12-22 12:00:00" // vip到期时间
+   			    "balance"           :"$100.00",            // 余额
+				"totalRecharge"     :"$500.00",            // 累计充值
+				"deviceControlTime" :""                    // 设备可控天数
+				"controlCount"      :xxx,                  // 可控次数
+				"remainingCount"    :xxx,                  // 剩余次数
+    			"forbidden"         :true/false,           // 用户禁用标志 true表示禁用 false表示启用
+    			"expire"            :true/false            // 用户停用标志 true表示停用 false表示未停用
 			},
 			{
 			...
 			},
 			...
 		],
-		total://总数
+		total://总页数
 	}
 }
 ```
 
-### 修改用户信息
+#### 根据地址筛选用户信息
 
-> POST /back/updateInfo
+> GRT /back/searchUserList?address=xxx
+
+响应体
+
+```json
+{
+	"message":"...",
+	"status":1,//成功
+	"data"：{
+		"list":[
+			{
+				"userId"            :"user-xxx", //用户id
+				"username"          :"xxx",//用户名
+				"sex"               :0|1|2,  //0代表女，1代表男，2代表不愿透露
+				"address"           :"黑龙江省,哈尔滨市,道外区",
+				"phone"             :"12345678910",
+				"registerTime"      :"2024-04-05 20:13:14", // 注册时间
+    			//以下没有的值为-
+				"vipStatus"         :1|0, //vip的状态，1代表激活，0代表未激活
+				"vipLevel"          :1|2|3|4|5, //vip的等级  1 2 3 4 5级
+ 			    "expirationDate"    :"2022-12-22 12:00:00" //vip到期时间
+   			    "balance"           :"$100.00",//余额
+				"totalRecharge"     :"$500.00",//累计充值
+				"deviceControlTime" :"", // 设备可控天数
+				"controlCount"      :xxx,//可控次数
+				"remainingCount"    :xxx,//剩余次数
+			},
+			{
+			...
+			},
+			...
+		],
+	}
+}
+```
+
+#### 用户删除,禁用,启用接口
+
+> POST /back/operateUser
 
 请求体
 
 ```json
 {
-	id:"xxx",//用户的id
-	//修改的字段
+    "userIds" :["user-xxx", ...],         //用户id
+    "type"    :"delete/disabled/enabled"  //删除|禁用|启用
 }
 ```
 
@@ -1217,47 +1792,143 @@ Referrer-Policy: same-origin
 ```json
 {
 	"message" : "...",
-	"status" : 1
+	"status"  : 1
 }
 ```
 
-### 删除用户信息
+#### 获取已同意的设备列表(分页)
 
-> DELETE /back/deleteUser?id = xxx
+> GET /back/getDevicesList?page=1&pageSize=10    
+>
+> page=1代表访问第一页数据
+>
+> pageSize=10代表每页显示10条数据
+
+响应体
 
 ```json
 {
-	"message" : "...",
-	"status" : 1
+	"message" :"...",
+	"status"  :1,    //成功
+	"data"    :{
+		"list":[
+			{
+				"devicesId"   : "dev-xxx",          //设备id
+          	    "devicesName" : "xxx",              //设备名
+       		    "userId"      : "user-xxx",         //所属用户id
+       		    "secretKey"   : "1234567890ABCDEF", //秘钥
+			},
+			...
+		],
+		total://总页数
+	}
 }
 ```
 
-### 通知发布
+#### 根据用户id筛选已同意的设备信息
 
-> POST /back/issueNotice
-
-请求体
-
-```json
-{
-	"title":"通知标题",
-	"message":"通知内容",
-	"createdAt":"公告发布时间"
-}
-```
+> GET /back/searchDevicesList?userId=user-xxx
 
 响应体
 
 ```json
 {
 	"message" : "...",
-	"status" : 1
+	"status"  : 1,     //成功
+	"data"    : {
+		"list":[
+			{
+				"devicesId"   : "dev-xxx",//设备id
+          	    "devicesName" : "xxx",//设备名
+       		    "userId"      : "user-xxx",//所属用户id
+       		    "secretKey"   : "1234567890ABCDEF",//秘钥
+			},
+			{
+			...
+			},
+			...
+		],
+	}
 }
 ```
 
-### 通知发布的列表显示
+#### 删除已同意的设备信息
 
-> GET /back/getNoticeList
+> DELETE /back/deleteDevices
+
+请求体
+
+```json
+{
+    "devicesIds": ["dev-xxx", ...] //设备id
+}
+```
+
+响应体
+
+```
+{
+	"message" : "...",
+	"status"  : 1
+}
+```
+
+#### 获取未处理的申请设备
+
+> GET /back/getApplyDevices
+>
+
+响应体
+
+```json
+{
+	"message":"...",
+	"status":1,//成功
+	"data"：{
+		"list":[
+			{
+				"devicesId"   : "dev-xxx",             //设备id
+          	    "devicesName" : "xxx",                 //设备名
+       		    "userId"      : "user-xxx",            //所属用户id
+       		    "secretKey"   : "1234567890ABCDEF",    //秘钥
+      		    "applyTime"   : "2024-04-05 20:13:14", //申请时间
+			},
+			...
+		],
+	}
+}
+```
+
+#### 处理设备申请
+
+> POST /back/applyDevices
+>
+
+请求体
+
+```json
+{
+    "devicesId" : ["user-xxx", ...], //设备id
+    "type"      : "approve/reject"   //同意|拒绝
+}
+```
+
+响应体
+
+```
+{
+	"message" : "...",
+	"status"  : 1
+}
+```
+
+#### 获取通知列表(分页)
+
+> GET /back/getNoticeList?page=1&pageSize=10    
+>
+> page=1代表访问第一页数据
+>
+> pageSize=10代表每页显示10条数据
 
 响应体
 
@@ -1268,21 +1939,34 @@ Referrer-Policy: same-origin
 	"data":{
 		"list":[
 			{
-				"id":"",
+				"noticeId":"ad-xxx",//通知id
+                "admId":"adm-xxx",//发布的管理员id
 				"title":"通知标题",
-				"message":"通知内容",
-				"createdAt":"公告发布时间"
+				"content":"通知内容",
+				"createTime":"2024-04-05 20:13:14",//通知创建时间
+                "updateTime":"2024-04-05 20:13:14"//通知更新时间,没有更新过的值为-
 			},
-		...
+			...
 		],
 		total:"xxx"	
 	}
 }
 ```
 
-### 通知删除
+#### 通知发布
 
-> DELETE  /back/deleteNotice?id=XXX
+> POST /back/issueNotice
+
+请求体
+
+```json
+{
+    "phone":"12345678910",//手机号
+	"title":"通知标题",
+	"content":"通知内容",
+	"createTime":"2024-04-05 20:13:14"//通知创建时间
+}
+```
 
 响应体
 
@@ -1292,3 +1976,95 @@ Referrer-Policy: same-origin
 	"status" : 1
 }
 ```
+
+#### 通知更改
+
+> POST  /back/updateNotice
+
+请求体
+
+```json
+{
+    "noticeId":"ad-xxx",//通知id
+	"title":"通知标题", //可选
+	"content":"通知内容", //可选
+    "updateTime":"2024-04-05 20:13:14"//通知更新时间
+}
+```
+
+响应体
+
+```json
+{
+	"message" : "...",
+	"status"  : 1
+}
+```
+
+#### 通知删除
+
+> DELETE  /back/deleteNotice
+
+请求体
+
+```json
+{
+    "noticeIds": ["ad-xxx", ...]//通知id
+}
+```
+
+响应体
+
+```
+{
+	"message" : "...",
+	"status"  : 1
+}
+```
+
+### 跨时空控制台被控端
+
+#### 客户端配置文件样例
+
+该配置文件用来记录用户的一些信息，比如是否记住密码，是否自动登录
+
+比如还有一些设置中的配置的记录
+
+该模块用于解释配置文件中的选项字段的含义
+
+~~~json
+{
+    "loginCfg" : {  // 登录配置
+        "RememberPwd" : 0 || 1,  // 是否记住密码 1表示记住密码
+        "AutoLogin"   : 0 || 1,  // 是否自动登录 1表示自动登录
+        "Account"     : "...",   // 账号
+        "Password"    : "...",   // 密码
+    },
+    "settingCfg" : {  // 设置配置
+        "key" : { // 密钥设置
+            value : "...", // 密钥值（控制码）
+            customized : 0 | 1   // 是否自定义密钥 1表示自定义
+        },
+        "selfStarting" : 0 | 1,   // 是否开机自启动 1表示开机自启动
+        "adminRun" : 0 | 1,       // 是否以管理员权限运行 1表示是
+        "monitoringPQ" : 0 | 1 | 2, // 监控画质 0表示标准 1表示极高 2表示无损画质
+        "downloadDir" : "...",      // 下载目录
+        "cacheDir" : "...",         // 缓存目录
+        "updateType" : 0 | 1        // 软件更新方式 0表示自动更新 1表示有更新时提醒
+    }
+}
+~~~
+
+## 新增需求说明（已部分实现（未完成））
+
+### 6月15日新增功能需求说明：
+
+​	1、设备关机重启新增时间设置，即指定时间后执行响应操作
+​		注：支持小数设置，时间段0到5分钟
+​	2、新增设备文件预览、上传、下载、删除以及文件执行功能
+​	3、新增支持设备状态查看功能（CPU、内存、磁盘......）
+
+## TODO:待完成任务
+
+待接入邮箱消息发送
+

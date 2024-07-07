@@ -77,12 +77,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>.;$(IncludePath)</IncludePath>
     <ProjectPublicIncludePath>.</ProjectPublicIncludePath>
-    <RemoteCopySourceMethod>sftp</RemoteCopySourceMethod>
+    <RemoteCopySourceMethod>rsync</RemoteCopySourceMethod>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="CrossTimeServer.cpp" />
     <ClCompile Include="Crypto.cpp" />
+    <ClCompile Include="CTCtrlEpoll.cpp" />
     <ClCompile Include="DBHelper.cpp" />
+    <ClCompile Include="CTCtrlFunction.cpp" />
+    <ClCompile Include="FilesServer.cpp" />
     <ClCompile Include="HttpParser.cpp" />
     <ClCompile Include="http_parser.c">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
@@ -105,11 +108,19 @@
     <ClCompile Include="logger\TimeZone.cc" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Packet.cpp" />
+    <ClCompile Include="CTCtrlThread.cpp" />
+    <ClCompile Include="CTCtrlThreadPool.cpp" />
+    <ClCompile Include="Process.cpp" />
+    <ClCompile Include="Tools.cpp" />
+    <ClCompile Include="WebSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CrossTimeServer.h" />
     <ClInclude Include="Crypto.h" />
+    <ClInclude Include="CTCtrlEpoll.h" />
     <ClInclude Include="DBHelper.h" />
+    <ClInclude Include="CTCtrlFunction.h" />
+    <ClInclude Include="FilesServer.h" />
     <ClInclude Include="HttpParser.h" />
     <ClInclude Include="http_parser.h" />
     <ClInclude Include="jsoncpp\allocator.h" />
@@ -143,14 +154,19 @@
     <ClInclude Include="logger\TimeZone.h" />
     <ClInclude Include="logger\Types.h" />
     <ClInclude Include="Packet.h" />
+    <ClInclude Include="Process.h" />
     <ClInclude Include="Public.h" />
+    <ClInclude Include="CTCtrlThread.h" />
+    <ClInclude Include="CTCtrlThreadPool.h" />
+    <ClInclude Include="Tools.h" />
+    <ClInclude Include="WebSocket.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="jsoncpp\json_valueiterator.inl" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <LibraryDependencies>pthread;m;dl;mysqlclient;crypto;</LibraryDependencies>
+      <LibraryDependencies>pthread;m;dl;mysqlclient;crypto;curl;</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

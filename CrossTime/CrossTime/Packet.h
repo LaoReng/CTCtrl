@@ -2,6 +2,14 @@
 #include <string>
 #include <string.h>
 
+typedef enum {
+	CTC_STARTEQUIPCTRL = 1,  // 开启设备监控
+	CTC_ENDEQUIPCTRL,        // 停止设备监控
+	CTC_CTRLEVENT,           // 鼠标键盘操作事件
+	CTC_EQUIPSHUTDOWN,       // 设备关机操作
+	CTC_EQUIPRESTART         // 设备重启操作
+}CTCTRLCMD;
+
 
 // 图片数据包
 class CPacket
@@ -144,11 +152,11 @@ public:
 		return sizeof(m_head) + sizeof(m_cmd) + sizeof(m_num) + sizeof(m_length) + m_length;
 	}
 private:
-	unsigned short m_head;         // 包头，固定格式FEFF
-	unsigned short m_cmd;          // 命令号 1监控屏幕   2停止屏幕监控   3鼠标键盘消息  
-	unsigned int m_num;            // 当前是第几张图片
-	size_t m_length;         // 长度，包括数据和校验和的总长度
-	std::string m_data;            // 数据
-	unsigned short m_sum;          // 校验和
-	mutable std::string outData;   // 以字符串形式保存
+	unsigned short      m_head;         // 包头，固定格式FEFF
+	unsigned short      m_cmd;          // 命令号 1监控屏幕   2停止屏幕监控   3鼠标键盘消息  
+	unsigned int        m_num;          // 当前是第几张图片
+	size_t              m_length;       // 长度，包括数据和校验和的总长度
+	std::string         m_data;         // 数据
+	unsigned short      m_sum;          // 校验和
+	mutable std::string outData;        // 以字符串形式保存
 };

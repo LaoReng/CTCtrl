@@ -99,6 +99,15 @@
     <ClInclude Include="DesktopNotificationManagerCompat.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="UserConfigInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WebSocket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="beCtrlServer.cpp">
@@ -108,9 +117,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Socket.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Packet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
@@ -144,6 +150,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DesktopNotificationManagerCompat.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UserConfigInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WebSocket.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

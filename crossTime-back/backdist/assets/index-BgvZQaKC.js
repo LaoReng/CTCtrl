@@ -1,0 +1,1 @@
+import{aS as s}from"./index-DPIfXxtw.js";const t=e=>s.get("/getDevicesList",{params:{page:e.page,pageSize:e.pageSize}}),c=e=>s.get("/searchDevicesList",{params:{userId:e.userId}}),p=()=>s.get("/getApplyDevices"),r=e=>s.post("/applyDevices",{devicesId:e.devicesId,type:e.type}),a=e=>s.delete("/deleteDevices",{data:{devicesIds:e.devicesIds}});export{a,p as b,r as c,t as d,c as s};

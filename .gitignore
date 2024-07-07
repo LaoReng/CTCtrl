@@ -8,4 +8,11 @@
 /beCtrlServer/x64
 /beCtrlServer/beCtrlServer/x64
 /beCtrlServer/CTCtrl-beCtrl
+/beCtrlServer/beCtrlServer/beCtrl.cfg
+/beCtrlServer/beCtrlServer/test_zhi.webp
+/beCtrlServer/setup/CTCtrl-beCtrl-SetupFiles
+/beCtrlServer/setup/CTCtrl-beCtrl-cache/part1/CTCtrl-beCtrl1.cab
+/beCtrlServer/setup/CTCtrl-beCtrl-cache
+/beCtrlServer/beCtrlServer/opencv2_dll
+/beCtrlServer/beCtrlServer/opencv2_lib
 /beCtrlServer/beCtrlServer/debug_bin

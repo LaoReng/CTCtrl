@@ -3,17 +3,15 @@
 
 #include <string.h>
 #include <string>
-#include <signal.h>
-#include <sys/stat.h>   // umask函数头文件
 #include <arpa/inet.h>  // inet_addr头文件
 #include <netinet/in.h> // sockaddr_in头文件
 #include "logger/Logging.h"
 #include "logger/LogFile.h" // muduo日志库
 
-#define INVALID_SOCKET -1
+#define INVALID_SOCKET -1  // 无效的套接字值
 
 // Linux
-typedef unsigned char       BYTE;
+typedef unsigned char       BYTE;   
 typedef int                 SOCKET;
 typedef unsigned short      WORD;
 typedef unsigned int        DWORD;
@@ -28,6 +26,23 @@ typedef struct tagPOINT
 } POINT;
 
 // 设备信息
+#if 0
+struct equipInfo
+{
+	equipInfo()
+		: width(-1)
+		, height(-1)
+		, eStatus(-1)
+	{}
+	std::string equipName;   // 设备名称
+	std::string eKey;        // 设备密钥
+	int         width;       // 设备屏幕的宽度
+	int         height;      // 设备屏幕的高度
+	int         eStatus;     // 设备状态  1 空闲 2 被控制
+	// TODO:...
+};
+#else
+// 设备信息
 struct equipInfo
 {
 	equipInfo()
@@ -35,14 +50,106 @@ struct equipInfo
 		, height(-1)
 		, eStatus(-1)
 		, thread(-1)
+		, type(-1)
 	{}
 	std::string equipName;   // 设备名称
+	std::string eKey;        // 设备密钥
 	int         width;       // 设备屏幕的宽度
 	int         height;      // 设备屏幕的高度
 	int         eStatus;     // 设备状态  1 空闲 2 被控制
 	long long   thread;      // 对应开启的线程的id -1表示没有
+	int         type;        // 设备类型  1：Windows系统  2：嵌入式
 	// TODO:...
 };
+#endif
+
+// 被控设备的信息（正在被控制的用户才有此信息）
+#if 0
+typedef struct SupEquipInfo
+{
+	SupEquipInfo()
+		: recvImagePort(0)
+	{}
+	SupEquipInfo(const SupEquipInfo& se)
+		: recvImagePort(se.recvImagePort)
+		, ctrlerId(se.ctrlerId.c_str())
+		, imageDir(se.imageDir.c_str())
+	{}
+	SupEquipInfo& operator=(const SupEquipInfo& se) {
+		if (this != &se) {
+			recvImagePort = se.recvImagePort;
+			ctrlerId = se.ctrlerId.c_str();
+			imageDir = se.imageDir.c_str();
+		}
+		return *this;
+	}
+	~SupEquipInfo() {}
+	unsigned short recvImagePort;       // 接收图片的端口
+	std::string    ctrlerId;            // 控制者的id
+	std::string    imageDir;            // 图片存放的绝对位置
+	// TODO:...
+} SUPEQUIPINFO;
+#else
+typedef struct SupEquipInfo
+{
+	SupEquipInfo()
+		: recvImageSock(INVALID_SOCKET)
+		, recvImagePort(0)
+		, sendImageClientSock(INVALID_SOCKET)
+	{}
+	SupEquipInfo(const SupEquipInfo& se)
+		: recvImageSock(se.recvImageSock)
+		, recvImagePort(se.recvImagePort)
+		, ctrlerId(se.ctrlerId.c_str())
+		, imageDir(se.imageDir.c_str())
+		, sendImageClientSock(se.sendImageClientSock)
+	{}
+	SupEquipInfo& operator=(const SupEquipInfo& se) {
+		if (this != &se) {
+			recvImageSock = se.recvImageSock;
+			recvImagePort = se.recvImagePort;
+			ctrlerId = se.ctrlerId.c_str();
+			imageDir = se.imageDir.c_str();
+			sendImageClientSock = se.sendImageClientSock;
+		}
+		return *this;
+	}
+	~SupEquipInfo() {}
+	SOCKET         recvImageSock;       // 接收图片的套接字
+	unsigned short recvImagePort;       // 接收图片的端口
+	std::string    ctrlerId;            // 控制者的id
+	std::string    imageDir;            // 图片存放的绝对位置
+	SOCKET         sendImageClientSock; // 发送图片的被控端套接字
+	// TODO:...
+} SUPEQUIPINFO;
+
+// 设备监控处理线程的信息
+struct screenArgs
+{
+	screenArgs(CCrossTimeServer* p, SOCKET sock, const std::string& eName)
+		: thiz(p), beSocket(sock)
+		, eName(eName)
+	{}
+	// 拷贝构造
+	screenArgs(const screenArgs& args)
+		: thiz(args.thiz)
+		, beSocket(args.beSocket)
+		, eName(args.eName)
+	{}
+	// 等于号重载
+	screenArgs& operator=(const screenArgs& args) {
+		if (this != &args) {
+			thiz = args.thiz;
+			beSocket = args.beSocket;
+			eName = args.eName;
+		}
+		return *this;
+	}
+	CCrossTimeServer* thiz;             // 指针
+	SOCKET            beSocket;         // 被控端的套接字
+	std::string       eName;            // 设备名
+};
+#endif
 
 // 客户端信息（包括被控端以及前端）
 struct clientInfo
@@ -87,34 +194,61 @@ typedef struct MKEvent {
 	DWORD MKKeyValue;  // 按下的键值 
 }MKEVENT, * PMKEVENT;
 
-
-
-// 设备监控处理线程的信息
-struct screenArgs
+// 图片数据
+typedef struct ImageData
 {
-	screenArgs(CCrossTimeServer* p, SOCKET sock, const std::string& eName)
-		: thiz(p), beSocket(sock)
-		, eName(eName)
-	{}
-	// 拷贝构造
-	screenArgs(const screenArgs& args)
-		: thiz(args.thiz)
-		, beSocket(args.beSocket)
-		, eName(args.eName)
-	{}
-	// 等于号重载
-	screenArgs& operator=(const screenArgs& args) {
-		if (this != &args) {
-			thiz = args.thiz;
-			beSocket = args.beSocket;
-			eName = args.eName;
-		}
-		return *this;
+public:
+	char                m_name[64];   // 图片名
+	std::string         m_data;       // 图片数据
+private:
+	mutable std::string Data;         // 总数据
+public:
+	/// <summary>
+	/// 构造函数
+	/// </summary>
+	/// <param name="ImageName">图片名</param>
+	/// <param name="size">参数ImageName所占大小</param>
+	ImageData(const char* ImageName = NULL, size_t size = 0)
+		: m_name("")
+	{
+		if (size >= 64)
+			size = 64;
+		if (ImageName)
+			memcpy(m_name, ImageName, size);
 	}
-	CCrossTimeServer* thiz;             // 指针
-	SOCKET            beSocket;         // 被控端的套接字
-	std::string       eName;            // 设备名
-};
+	/// <summary>
+	/// 数据解析
+	/// </summary>
+	/// <param name="pData">数据内容</param>
+	/// <param name="size">大小</param>
+	/// <returns>返回值表示解析是否成功， true表示成功  false表示失败</returns>
+	bool parse(const char* pData, size_t size) {
+		if (size < sizeof(m_name))
+			return false;
+		m_data.resize(size - sizeof(m_name));
+		memcpy(m_name, pData, sizeof(m_name));
+		memcpy((char*)m_data.c_str(), pData + sizeof(m_name), size - sizeof(m_name));
+		return true;
+	}
+	/// <summary>
+	/// 将数据转换为字节流
+	/// </summary>
+	/// <returns>返回值表示转换后的数据</returns>
+	const char* toBytes() const {
+		Data.resize(64 + m_data.size());
+		memcpy((char*)Data.c_str(), m_name, sizeof(m_name));
+		memcpy((char*)Data.c_str() + sizeof(m_name), m_data.c_str(), m_data.size());
+		return Data.c_str();
+	}
+	/// <summary>
+	/// 数据大小
+	/// </summary>
+	/// <returns>返回值表示转换字节流数据的大小</returns>
+	size_t Size() const {
+		return 64 + m_data.size();
+	}
+}IMAGEDATA;
+
 
 // 缓冲区类
 class Buffer
@@ -168,11 +302,11 @@ public:
 		}
 	}
 	// 转换为数字（长整型）
-	long long asLONGLONG() {
+	long long asLONGLONG() const {
 		return atoll(c_str());
 	}
 	// 转换为数字（双精度）
-	double asDOUBLE() {
+	double asDOUBLE() const {
 		return atof(c_str());
 	}
 	Buffer& operator=(const Buffer& buf) {
@@ -204,38 +338,5 @@ public:
 	}
 	operator const BYTE* ()const {
 		return (const BYTE*)c_str();
-	}
-};
-
-
-class CTools
-{
-public:
-	// 创建守护进程
-	static int SwitchDeamon()
-	{
-		pid_t ret = fork();
-		if (ret == -1)return -1;
-		if (ret > 0) {
-			// 主进程
-			exit(0);
-		}
-		// 子进程
-		ret = setsid();
-		if (ret == -1)return -2;
-		ret = fork();
-		if (ret == -1)return -3;
-		if (ret > 0) {
-			// 子进程
-			exit(0);
-		}
-
-		// 孙进程
-		for (int i = 0; i < 3; i++) {
-			close(i);
-		}
-		umask(0);
-		signal(SIGCHLD, SIG_IGN);
-		return 0;
 	}
 };

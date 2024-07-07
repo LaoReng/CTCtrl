@@ -43,6 +43,8 @@
 #ifndef OPENCV_ALL_HPP
 #define OPENCV_ALL_HPP
 
+// #define  DEBUG  0
+
 // File that defines what modules where included during the build of OpenCV
 // These are purely the defines of the correct HAVE_OPENCV_modulename values
 #include "opencv2/opencv_modules.hpp"
