@@ -1,1 +1,0 @@
-﻿#include "CTCtrlThread.h"

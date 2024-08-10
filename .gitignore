@@ -18,3 +18,5 @@
 /beCtrlServer/beCtrlServer/debug_bin
 /beCtrlServer-cmake/build
 /beCtrlServer-cmake/bin
+/CrossTime/build
+/CrossTime/bin
