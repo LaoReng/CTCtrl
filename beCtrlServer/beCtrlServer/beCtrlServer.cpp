@@ -57,6 +57,20 @@ int Main()
 	return 0;
 }
 
+void settingTest()
+{
+	/*CSettingDlg dlg;
+	dlg.DoModal();*/
+
+	HDC hDC = GetDC(NULL);
+	cv::Rect recv(0, 0, GetDeviceCaps(hDC, HORZRES), GetDeviceCaps(hDC, VERTRES));
+	ReleaseDC(WindowFromDC(hDC), hDC);
+	std::string imageData;
+
+	CTools::screenCapture(imageData, recv);
+
+}
+
 int main(int argc, char* argv[])
 {
 	int nRetCode = 0;
@@ -72,7 +86,8 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			Main();
+			settingTest();
+			// Main();
 		}
 	}
 	else

@@ -1,0 +1,8 @@
+
+SET(
+    SRC_LIST
+    ${SRC_LIST}
+    ${CMAKE_CURRENT_SOURCE_DIR}/Process.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Process.h
+    PARENT_SCOPE
+)

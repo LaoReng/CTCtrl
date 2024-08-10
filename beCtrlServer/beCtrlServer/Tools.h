@@ -166,7 +166,6 @@ public:
 			GetDeviceCaps(hDC, BITSPIXEL)) == FALSE)
 		{
 			TRACE("图片创建失败");
-			// TRACE();
 			return -1;
 		}
 		// 复制指定区域的屏幕，到Image中
@@ -175,7 +174,7 @@ public:
 			0, 0,
 			image.GetWidth(), image.GetHeight(),
 			hDC, 0, 0,
-			SRCCOPY) == FALSE) 
+			SRCCOPY) == FALSE)
 		{
 			TRACE("图片复制失败");
 			image.ReleaseDC();
@@ -205,137 +204,72 @@ public:
 		LARGE_INTEGER bg = {};
 		pStream->Seek(bg, STREAM_SEEK_SET, NULL); // 流指针移到开头
 		PBYTE pData = (PBYTE)GlobalLock(hMem);    // 将数据锁定提取
-		if (pData != NULL) {
-			SIZE_T nSize = GlobalSize(hMem);      // 获取数据大小
-			do {
-				std::string data(nSize, '\0');
-				memcpy((char*)data.c_str(), pData, nSize);
-				GlobalUnlock(hMem);
-				pStream->Release();
-				GlobalFree(hMem);
-
-				// 上面是屏幕截图的完整图片
-				
-				// 进行图片质量压缩
-				cv::_InputArray src_arr((char*)data.c_str(), (int)data.size());
-				cv::Mat src_mat = cv::imdecode(src_arr, cv::IMREAD_COLOR);
-				{
-					std::string str;
-					data.swap(str);
-				}
-				if (src_mat.data == NULL) {
-					// 图片加载失败
-					TRACE("图片加载失败");
-					break;
-				}
-				// cv::Mat dst_src = src_mat(recv);  // 这里面保存的就是上面的数据
-				cv::Mat amplify1;
-				cv::resize(src_mat/*dst_src*/, amplify1, cv::Size(), 0.5, 0.5, cv::INTER_AREA);
-
-
-				std::vector<uchar> pic_buff; // 保存图片的缓冲区
-				std::vector<int> compression_params;  // 图片处理参数
-				// IMWRITE_JPEG_QUALITY   jpg   IMWRITE_WEBP_QUALITY  webp
-				compression_params.push_back(cv::IMWRITE_JPEG_QUALITY);  // 图片类型参数
-				compression_params.push_back(50);                       // 图片质量参数
-				bool ret = cv::imencode(".jpg", amplify1, pic_buff, compression_params);
-				if (ret == false) {
-					pic_buff.clear();
-					break;
-				}
-				imageData.resize(pic_buff.size());
-				memcpy((char*)imageData.c_str(), pic_buff.data(), imageData.size());
-				// pic_buff.clear();
-#if 0
-				FILE* pFile = fopen("./test_zhi.webp", "wb+"); // 二进制的写
-				if (pFile == NULL) {
-					TRACE(_T("文件创建失败\r\n"));
-					return -1;
-				}
-				fwrite(imageData.c_str(), 1, imageData.size(), pFile);
-				fclose(pFile);
-#endif // DEV
-				// TRACE("降质后的图片所占字节为：%d\r\n", imageData.size());
-				cv::destroyAllWindows();
-			} while (false);
-		}
-		else {
+		if (pData == NULL) {
 			pStream->Release();
 			GlobalFree(hMem);
 			TRACE("数据大小为0\r\n");
 			return -5;
 		}
-		return 0;
-	}
+		SIZE_T nSize = GlobalSize(hMem);      // 获取数据大小
+		do {
+			std::string data(nSize, '\0');
+			memcpy((char*)data.c_str(), pData, nSize);
+			GlobalUnlock(hMem);
+			pStream->Release();
+			GlobalFree(hMem);
+			// 上面是屏幕截图的完整图片
 
-	static int oldSaveScreen(std::string& imageData, cv::Rect& recv)
-	{
-		// 利用CImage类实现屏幕截图
-		HDC hDC = GetDC(NULL);
-		// 在创建时，创建指定尺寸的Image
-		CImage image;
-		if (image.Create(recv.width, recv.height, GetDeviceCaps(hDC, BITSPIXEL)) == FALSE) {
-			TRACE(_T("图片创建失败\r\n"));
-			return -1;
-		}
-		// 复制指定区域的屏幕，到Image中
-		if (BitBlt(image.GetDC(), 0, 0, image.GetWidth(), image.GetHeight(), hDC, 0, 0, SRCCOPY) == FALSE) {
-			TRACE(_T("图片复制失败\r\n"));
-			return -2;
-		}
-		ReleaseDC(WindowFromDC(hDC), hDC);
-
-		HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, 0);
-		if (hMem == NULL) {
-			return -3;
-		}
-		IStream* pStream = NULL;
-		HRESULT ret = CreateStreamOnHGlobal(hMem, TRUE, &pStream);
-		if (ret != S_OK) {
-			TRACE(_T("内存绑定创建失败\r\n"));
-			return -4;
-		}
+#if 1
+			FILE* pFile = fopen("./original.jpg", "wb+"); // 二进制的写
+			if (pFile == NULL) {
+				TRACE(_T("文件创建失败\r\n"));
+				return -1;
+			}
+			fwrite(data.c_str(), 1, data.size(), pFile);
+			fclose(pFile);
+#endif // DEV
 
 
-
-		image.Save(pStream, Gdiplus::ImageFormatJPEG);
-		LARGE_INTEGER bg = {};
-		pStream->Seek(bg, STREAM_SEEK_SET, NULL);
-		PBYTE pData = (PBYTE)GlobalLock(hMem);
-		if (pData != NULL) {
-			SIZE_T nSize = GlobalSize(hMem);
-
-			do {
-				std::string data(nSize, '\0');
-				memcpy((char*)data.c_str(), pData, nSize);
-				char* pData = (char*)data.c_str();
-				int imageSize = (int)data.size();
-				cv::_InputArray src_arr(pData, imageSize);
-				cv::Mat src_mat = cv::imdecode(src_arr, 1);
-				{
-					std::string str;
-					data.swap(str);
-				}
-				cv::Mat dst_src = src_mat(recv);
-				std::vector<uchar> pic_buff;
-				std::vector<int> compression_params;
-				compression_params.push_back(cv::IMWRITE_JPEG_QUALITY);
-				compression_params.push_back(20);
-				bool ret = cv::imencode(".jpg", dst_src, pic_buff, compression_params);
-				if (ret == false) {
-					break;
-				}
-				imageData.resize(pic_buff.size());
-				memcpy((char*)imageData.c_str(), pic_buff.data(), imageData.size());
+			//*** 进行图片质量压缩 ***
+			// cv::imread() 该函数可以从磁盘中读取一张图片
+			cv::_InputArray src_arr((char*)data.c_str(), (int)data.size());
+			cv::Mat src_mat = cv::imdecode(src_arr, cv::IMREAD_COLOR);
+			{
+				std::string str;
+				data.swap(str);
+			}
+			if (src_mat.data == NULL) {
+				// 图片加载失败
+				TRACE("图片加载失败");
+				break;
+			}
+			// cv::Mat dst_src = src_mat(recv);  // 这里面保存的就是上面的数据
+			cv::Mat amplify1;
+			cv::resize(src_mat/*dst_src*/, amplify1, cv::Size(), 0.5, 0.5, cv::INTER_LINEAR);
+			std::vector<uchar> pic_buff; // 保存图片的缓冲区
+			// 图片质量压缩
+			// IMWRITE_JPEG_QUALITY   jpg   IMWRITE_WEBP_QUALITY  webp
+			std::vector<int> compression_params = { cv::IMWRITE_JPEG_QUALITY/*图片类型参数*/ ,50/*图片质量参数*/ };  // 图片处理参数
+			bool ret = cv::imencode(".jpg", amplify1, pic_buff, compression_params);
+			if (ret == false) {
 				pic_buff.clear();
-
-			} while (false);
-
-		}
-		GlobalUnlock(hMem);
-		pStream->Release();
-		GlobalFree(hMem);
-		image.ReleaseDC();
+				break;
+			}
+			imageData.resize(pic_buff.size());
+			memcpy((char*)imageData.c_str(), pic_buff.data(), imageData.size());
+			// pic_buff.clear();
+#if 1
+			/*FILE* */pFile = fopen("./dispose.jpg", "wb+"); // 二进制的写
+			if (pFile == NULL) {
+				TRACE(_T("文件创建失败\r\n"));
+				return -1;
+			}
+			fwrite(imageData.c_str(), 1, imageData.size(), pFile);
+			fclose(pFile);
+#endif // DEV
+			// TRACE("降质后的图片所占字节为：%d\r\n", imageData.size());
+			cv::destroyAllWindows();
+		} while (false);
 		return 0;
 	}
 	/// <summary>

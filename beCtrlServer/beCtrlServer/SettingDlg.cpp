@@ -13,13 +13,10 @@ IMPLEMENT_DYNAMIC(CSettingDlg, CDialog)
 
 CSettingDlg::CSettingDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(IDD_DLG_SETTING, pParent)
-{
-
-}
+{}
 
 CSettingDlg::~CSettingDlg()
-{
-}
+{}
 
 void CSettingDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -36,25 +33,19 @@ END_MESSAGE_MAP()
 BOOL CSettingDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
 	// TODO:  在此添加额外的初始化
-
 	CRect rect;
 	GetWindowRect(&rect);
-
-	printf("width:%d height:%d\n", rect.Width(), rect.Height());
-
+	TRACE(_T("width:%d height:%d\n"), rect.Width(), rect.Height());
 	// 458
 	// 250
 	rect.bottom = rect.top + 250;
 	SetWindowPos(NULL, rect.left, rect.top, 810, 450, SWP_NOZORDER | SWP_NOMOVE);
-
 	SCROLLINFO scrollinfo;
 	GetScrollInfo(SB_VERT, &scrollinfo, SIF_ALL);
 	scrollinfo.nPage = 10; //设置滑块大小
 	scrollinfo.nMax = 72; //设置滚动条的最大位置0–100
 	SetScrollInfo(SB_VERT, &scrollinfo, SIF_ALL);
-
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
@@ -85,7 +76,7 @@ void CSettingDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		break;
 	case SB_LINEDOWN:           //Scroll one line down
 		scrollinfo.nPos += 1;
-		if (scrollinfo.nPos + scrollinfo.nPage > scrollinfo.nMax)  //此处一定要注意加上滑块的长度，再作判断
+		if ((scrollinfo.nPos + scrollinfo.nPage) > (UINT)scrollinfo.nMax)  //此处一定要注意加上滑块的长度，再作判断
 		{
 			scrollinfo.nPos = scrollinfo.nMax;
 			break;
@@ -111,7 +102,7 @@ void CSettingDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		scrollinfo.nPos += 5;
 		
 		// TRACE(_T("加完nPos的值%d\n"), scrollinfo.nPos);
-		if (scrollinfo.nPos  > (scrollinfo.nMax - scrollinfo.nPage))  //此处一定要注意加上滑块的长度，再作判断
+		if (scrollinfo.nPos  > (scrollinfo.nMax - (int)scrollinfo.nPage))  //此处一定要注意加上滑块的长度，再作判断
 		{
 			// TRACE(_T("往里面存的值%d\n"), scrollinfo.nPos);
 			scrollinfo.nPage = 13;
