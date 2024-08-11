@@ -459,7 +459,7 @@ Buffer CFilesServer::MakeAckPacket(std::string& header, std::string& bodyData)
 	if (bodyData.size() > 0) {
 		// 有body数据
 		memset(temp, 0, sizeof(temp));
-		snprintf(temp, sizeof(temp), "%d", bodyData.size());
+		snprintf(temp, sizeof(temp), "%ld", bodyData.size());
 		result += (Buffer("Content-Length: ") + temp + "\r\n");
 	}
 

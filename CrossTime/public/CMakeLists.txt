@@ -1,0 +1,10 @@
+SET(
+    SRC_LIST
+    ${SRC_LIST}
+    ${CMAKE_CURRENT_SOURCE_DIR}/Packet.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Packet.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/Public.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/Tools.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Tools.h
+    PARENT_SCOPE
+)

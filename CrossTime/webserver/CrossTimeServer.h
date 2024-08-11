@@ -16,7 +16,7 @@
 #include "Tools.h"        // 工具类
 #include "HttpParser.h"   // http解析封装类
 #include "Crypto.h"       // 加解密协议
-#include "jsoncpp/json.h" // json结构分装和解析
+#include "json.h" // json结构分装和解析
 #include "CTCtrlThreadPool.h"
 #include "Process.h"
 #include "Packet.h"
