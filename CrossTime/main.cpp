@@ -374,7 +374,7 @@ int wsTest()
 
 int main(int argc, char* argv[])
 {
-	printf("执行到这里\n");
+	// printf("执行到这里\n");
 	CTools::restart(argc, argv);
 
 	/*if ((argc > 1) && (strcmp(argv[1], "websocketServer") == 0)) {

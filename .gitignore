@@ -16,7 +16,5 @@
 /beCtrlServer/beCtrlServer/opencv2_dll
 /beCtrlServer/beCtrlServer/opencv2_lib
 /beCtrlServer/beCtrlServer/debug_bin
-/beCtrlServer-cmake/build
-/beCtrlServer-cmake/bin
 /CrossTime/build
 /CrossTime/bin
