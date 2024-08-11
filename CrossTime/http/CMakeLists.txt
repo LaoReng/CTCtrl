@@ -1,9 +1,0 @@
-SET(
-    SRC_LIST
-    ${SRC_LIST}
-    ${CMAKE_CURRENT_SOURCE_DIR}/http_parser.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/http_parser.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/HttpParser.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/HttpParser.h
-    PARENT_SCOPE
-)

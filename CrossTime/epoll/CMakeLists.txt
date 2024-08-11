@@ -1,7 +1,0 @@
-SET(
-    SRC_LIST
-    ${SRC_LIST}
-    ${CMAKE_CURRENT_SOURCE_DIR}/CTCtrlEpoll.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/CTCtrlEpoll.h
-    PARENT_SCOPE
-)

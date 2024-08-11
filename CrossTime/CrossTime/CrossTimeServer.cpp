@@ -596,7 +596,7 @@ int CCrossTimeServer::registerDispose(const UrlParser& url, const CHttpParser& p
 		}
 		else m_db.FreeResult(res);
 		// 向忘记密码表中插入数据
-		snprintf((char*)sql.c_str(), sql.size(), "insert into revert_password(Uid, question1, answer1, question2, answer2) VALUES(%lld, '%s', '%s', '%s', '%s');\0\0", uid, root[fields[4]].asString().c_str(), root[fields[5]].asString().c_str(), root[fields[6]].asString().c_str(), root[fields[7]].asString().c_str());
+		snprintf((char*)sql.c_str(), sql.size(), "insert into revert_password(Uid, question1, answer1, question2, answer2) VALUES(%d, '%s', '%s', '%s', '%s');\0\0", uid, root[fields[4]].asString().c_str(), root[fields[5]].asString().c_str(), root[fields[6]].asString().c_str(), root[fields[7]].asString().c_str());
 		LOG_INFO << "registerDispose insert revert_password sql:[" << sql.c_str() << "]";
 		m_logFile->flush();
 		if (false == m_db.Execute(sql)) { // 向数据表中添加信息
@@ -605,7 +605,7 @@ int CCrossTimeServer::registerDispose(const UrlParser& url, const CHttpParser& p
 			break;
 		}
 		// 向vip表插入用户信息
-		snprintf((char*)sql.c_str(), sql.size(), "insert into vip(Uid, status, grade, acc_amount, expire_time, ctrl_time, ctrl_num, surplus_num) VALUES(%lld, b'0', 0, 0, '%s', 10, 10, 10);\0\0", uid, root[fields[8]].asString().c_str());
+		snprintf((char*)sql.c_str(), sql.size(), "insert into vip(Uid, status, grade, acc_amount, expire_time, ctrl_time, ctrl_num, surplus_num) VALUES(%d, b'0', 0, 0, '%s', 10, 10, 10);\0\0", uid, root[fields[8]].asString().c_str());
 		LOG_INFO << "registerDispose insert vip sql:[" << sql.c_str() << "]";
 		m_logFile->flush();
 		if (false == m_db.Execute(sql)) {  // 向数据表中添加信息
@@ -2367,7 +2367,7 @@ int CCrossTimeServer::updateUserInfoDispose(const UrlParser& url, const CHttpPar
 		}
 
 		// 修改数据库
-		snprintf((char*)sql.c_str(), sql.size(), "update ctuser set %s where Uid = '%ld';\0\0", updateSet.c_str(), uid);
+		snprintf((char*)sql.c_str(), sql.size(), "update ctuser set %s where Uid = '%d';\0\0", updateSet.c_str(), uid);
 		LOG_INFO << "updateUserInfoDispose update user sql:[" << sql.c_str() << "]";
 		m_logFile->flush();
 		if (false == m_db.Execute(sql)) {
@@ -3350,7 +3350,7 @@ int CCrossTimeServer::backGetNoticeListDispose(const UrlParser& url, const CHttp
 		}
 		// 先获取出设备的总数
 		std::string sql(512, '\0');
-		snprintf((char*)sql.c_str(), sql.size(), "select COUNT(id) as nCount from notice;\0");
+		snprintf((char*)sql.c_str(), sql.size(), "select COUNT(id) as nCount from notice;\0\0");
 		LOG_INFO << "backGetNoticeListDispose select notice total number sql:[" << sql.c_str() << "]";
 		m_logFile->flush();
 		if (false == m_db.Execute(sql)) {
@@ -3386,7 +3386,7 @@ int CCrossTimeServer::backGetNoticeListDispose(const UrlParser& url, const CHttp
 		snprintf(
 			(char*)sql.c_str(),
 			sql.size(),
-			"SELECT id, mid, title, content, create_time, `update` FROM notice LIMIT %d, %d;\0",
+			"SELECT id, mid, title, content, create_time, `update` FROM notice LIMIT %d, %d;\0\0",
 			(page - 1) * pageSize,
 			pageSize
 		);
@@ -3506,7 +3506,7 @@ int CCrossTimeServer::backUpdateNoticeDispose(const UrlParser& url, const CHttpP
 		// 修改数据库
 		std::string sql(512, '\0');
 		// UPDATE notice SET title='通知',content='通知', `update`='2024-05-10 18:30:30' WHERE id=2;
-		snprintf((char*)sql.c_str(), sql.size(), "UPDATE notice SET %s,`update`='%s' WHERE id=%s;\0", updateSet.c_str(), fieldsValue[sizeof(fieldsValue) / sizeof(*fieldsValue) - 1].c_str(), fieldsValue[0].c_str());
+		snprintf((char*)sql.c_str(), sql.size(), "UPDATE notice SET %s,`update`='%s' WHERE id=%s;\0\0", updateSet.c_str(), fieldsValue[sizeof(fieldsValue) / sizeof(*fieldsValue) - 1].c_str(), fieldsValue[0].c_str());
 		LOG_INFO << "backUpdateNoticeDispose update notice sql:[" << sql.c_str() << "]";
 		m_logFile->flush();
 		if (false == m_db.Execute(sql)) {
@@ -3612,7 +3612,7 @@ Buffer CCrossTimeServer::MakeAckPacket(std::string& bodyData)
 	if (bodyData.size() > 0) {
 		// 有body数据
 		memset(temp, 0, sizeof(temp));
-		snprintf(temp, sizeof(temp), "%ld", bodyData.size());
+		snprintf(temp, sizeof(temp), "%d", bodyData.size());
 		result += (Buffer("Content-Length: ") + temp + "\r\n");
 	}
 	result += "X-Content-Type-Options: nosniff\r\nReferrer-Policy: same-origin\r\n\r\n";
