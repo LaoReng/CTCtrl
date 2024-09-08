@@ -2656,31 +2656,12 @@ int CCrossTimeServer::backGetUserListDispose(const UrlParser& url, const CHttpPa
 	return 0;
 }
 
-std::string DecodeURIComponent(const std::string& value)
-{
-	std::string decoded;
-	int hex = 0;
-	for (size_t i = 0; i < value.length(); ++i) {
-		if (value[i] == '%' && i + 2 < value.length()) {
-			std::string hexStr = value.substr(i + 1, 2);
-			hex = std::stoi(hexStr, 0, 16);
-			decoded += static_cast<char>(hex);
-			i += 2;
-		}
-		else if (value[i] == '+') {
-			decoded += ' ';
-		}
-		else {
-			decoded += value[i]; // 表示这个不是转码字符
-		}
-	}
-	return decoded;
-}
+
 
 int CCrossTimeServer::backSearchUserListDispose(const UrlParser& url, const CHttpParser& parser, std::string& bodyData, SOCKET clientSocket)
 {
 	Buffer addr = url["address"];
-	addr = DecodeURIComponent(addr).c_str(); // 地区查找有特殊符号（中文），进行decode转码
+	addr = CTools::DecodeURIComponent(addr).c_str(); // 地区查找有特殊符号（中文），进行decode转码
 
 	Json::Value body;
 	body["message"] = "获取失败";

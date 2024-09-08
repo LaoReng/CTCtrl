@@ -153,6 +153,27 @@ public:
 			printf("[info]:已将正在运行的上一版本进程结束\n");
 		}
 	}
+	// http UTF-8特殊字符编码转义
+	static std::string DecodeURIComponent(const std::string& value)
+	{
+		std::string decoded;
+		int hex = 0;
+		for (size_t i = 0; i < value.length(); ++i) {
+			if (value[i] == '%' && i + 2 < value.length()) {
+				std::string hexStr = value.substr(i + 1, 2);
+				hex = std::stoi(hexStr, 0, 16);
+				decoded += static_cast<char>(hex);
+				i += 2;
+			}
+			else if (value[i] == '+') {
+				decoded += ' ';
+			}
+			else {
+				decoded += value[i]; // 表示这个不是转码字符
+			}
+		}
+		return decoded;
+	}
 private:
 	/// <summary>
 	/// curl发送http请求调用的回调函数，回调函数中对返回的json格式的body进行了解析，解析结果储存在result中
