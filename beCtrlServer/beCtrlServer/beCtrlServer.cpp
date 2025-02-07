@@ -86,8 +86,8 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			settingTest();
-			// Main();
+			// settingTest();
+			Main();
 		}
 	}
 	else
