@@ -300,7 +300,7 @@ public:
 		LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME, &tkp.Privileges[0].Luid);
 		tkp.PrivilegeCount = 1;  // 要设置一个特权
 		tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-		// 获得该进程的关闭权限。
+		// 使该进程获得关闭权限。
 		AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, (PTOKEN_PRIVILEGES)NULL, 0);
 		// 无法测试AdjustTokenPrivileges的返回值。
 		if (GetLastError() != ERROR_SUCCESS) {
